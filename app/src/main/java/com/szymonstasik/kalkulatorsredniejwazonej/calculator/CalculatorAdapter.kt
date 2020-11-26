@@ -1,6 +1,5 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.calculator
 
-import android.R
 import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,11 @@ import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.ListItemNoteAndWeightBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Statics
+import com.szymonstasik.kalkulatorsredniejwazonej.utils.Utils
 
 class CalculatorAdapter(val changeNoteListener: ChangeNoteListener,
                         val changeWeightListener: ChangeWeightListener): ListAdapter<NoteNWeight,
@@ -39,13 +40,26 @@ class CalculatorAdapter(val changeNoteListener: ChangeNoteListener,
             binding.executePendingBindings()
             binding.position = adapterPosition
             //Setting adapter for Note Spinner
-            var noteAdapter = ArrayAdapter<String>(binding.root.context, R.layout.simple_dropdown_item_1line, Statics.NOTE_NUMBERS)
-            noteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            val noteNumbers: MutableList<String> = mutableListOf()
+            for(i in 0..200){
+                var value = Utils.getNoteFromId(i)
+                var text = if (Utils.isWhole(value.toDouble()))
+                    value.toInt().toString()
+                else
+                    "${value.toInt()} +"
+                noteNumbers.add(text)
+            }
+            val noteWeights: MutableList<String> = mutableListOf()
+            for(i in 1..100){
+                noteWeights.add(i.toString())
+            }
+            var noteAdapter = ArrayAdapter<String>(binding.root.context, android.R.layout.simple_dropdown_item_1line, noteNumbers)
+            noteAdapter.setDropDownViewResource(R.layout.dropdown_item)
             binding.noteSpinner.adapter = noteAdapter
             binding.noteSpinner.setSelection(item.note)
 
             //Setting adapter for Weight Spinner
-            var weightAdapter = ArrayAdapter<String>(binding.root.context, R.layout.simple_dropdown_item_1line, Statics.NOTE_WEIGHTS)
+            var weightAdapter = ArrayAdapter<String>(binding.root.context, android.R.layout.simple_dropdown_item_1line, noteWeights)
             weightAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.weightSpinner.adapter = weightAdapter
             binding.weightSpinner.setSelection(item.weight)

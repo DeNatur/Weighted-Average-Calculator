@@ -85,8 +85,16 @@ class HistoryWeightedAverageAdapter(private val historyViewModel: HistoryViewMod
         override fun areContentsTheSame(oldItem: WeightedAverage, newItem: WeightedAverage): Boolean {
             var same = true
             for (position in oldItem.notes.indices){
-               if (oldItem.notes[position] != newItem.notes[position])
-                   same = false
+                if(position < oldItem.notes.size && position < newItem.notes.size){
+                    if (oldItem.notes[position] != newItem.notes[position]) {
+                        same = false
+                        break
+                    }
+                }else{
+                    same = false
+                    break
+                }
+
             }
             return same &&
                     oldItem.timeAddedMilli == newItem.timeAddedMilli &&

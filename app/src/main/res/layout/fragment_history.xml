@@ -12,8 +12,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         android:background="@color/green_primary"
         tools:context=".history.HistoryFragment">
+        <ImageButton
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/ripple"
+            android:onClick="@{() -> historyViewModel.onBackPressed()}"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
             android:id="@+id/strokeTextView"
             android:layout_width="wrap_content"
@@ -32,12 +44,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="32dp"
+            android:clipChildren="false"
             android:layout_marginBottom="24dp"
+            android:paddingBottom="24dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/calculateButton"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/strokeTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/strokeTextView"
+            app:layout_constraintVertical_bias="0.0" />
+
         <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
             android:id="@+id/noResultsText"
             android:layout_width="match_parent"
@@ -60,18 +77,28 @@
             android:id="@+id/calculateButton"
             style="@style/RoundedLightYellowButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:elevation="20dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/rounded_ten_dp"
             android:text="@string/calculate"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/adView"
             app:layout_constraintDimensionRatio="w,3:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.52"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appImage" />
-
+            app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:adSize="BANNER"
+            app:adUnitId="ca-app-pub-6726838029317783/3609053898"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -45,6 +45,13 @@ class CalculatorViewModel(private val weightedAverageKey: Long = 0L,
         return _navigateToResults
     }
 
+    private val _backPressState = MutableLiveData<Boolean>()
+
+    val backPressState: LiveData<Boolean>
+    get(){
+        return _backPressState
+    }
+
     private val _weightedAverage = MutableLiveData<WeightedAverage>()
 
     val weightedAverage: LiveData<WeightedAverage>
@@ -62,6 +69,8 @@ class CalculatorViewModel(private val weightedAverageKey: Long = 0L,
     fun doneNavigatingToResult(){
         _navigateToResults.value = null
     }
+
+
 
     fun addNewNote(){
         val note = _weightedAverage.value
@@ -114,8 +123,15 @@ class CalculatorViewModel(private val weightedAverageKey: Long = 0L,
         note?.notes = list
         _weightedAverage.value = note
     }
+    fun donePopBack(){
+        _backPressState.value = false
+    }
+    fun onBackPressed(){
+        _backPressState.value = true
+    }
 
     init {
+        _backPressState.value = false
         uiScope.launch {
             _weightedAverage.value = getWeightedAverage(weightedAverageKey)
         }

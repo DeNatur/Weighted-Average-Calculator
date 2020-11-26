@@ -1,6 +1,8 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.AdRequest
 import com.kobakei.ratethisapp.RateThisApp
+import com.szymonstasik.kalkulatorsredniejwazonej.MainActivity
 import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.calculator.CalculatorFragmentArgs
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentCalculatorBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentResultBinding
+import com.szymonstasik.kalkulatorsredniejwazonej.utils.Statics
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Utils
 
 
@@ -27,6 +32,19 @@ class ResultFragment : Fragment() {
         savedInstanceState: Bundle?): View? {
         val binding: FragmentResultBinding =  DataBindingUtil.inflate(
             inflater, R.layout.fragment_result, container, false)
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+
+        var i = sharedPref?.getInt(Statics.AD_COUNTER, 0)
+        if (i != null) {
+            i += 1
+            Log.d("AD CHECK", i.toString())
+            if(i >= 3){
+                var activ: MainActivity = activity as MainActivity
+                activ.mInterstitialAd.loadAd(AdRequest.Builder().build())
+                activ.mInterstitialAd.show()
+            }
+            sharedPref?.edit()?.putInt(Statics.AD_COUNTER, i)?.commit()
+        }
 
         val application = requireNotNull(this.activity).application
 
@@ -76,7 +94,6 @@ class ResultFragment : Fragment() {
                 resultViewModel.onDoneNavigatingToHistory()
             }
         })
-        RateThisApp.showRateDialogIfNeeded(context);
 
         return binding.root
     }

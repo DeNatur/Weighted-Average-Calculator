@@ -41,6 +41,21 @@ class HistoryViewModel(val database: WeightedAverageDao): ViewModel() {
             return _navigateToCalculator
         }
 
+    private val _backPressState = MutableLiveData<Boolean>()
+
+    val backPressState: LiveData<Boolean>
+
+    get(){
+        return _backPressState
+    }
+
+    fun donePopBack(){
+        _backPressState.value = false
+    }
+    fun onBackPressed(){
+        _backPressState.value = true
+    }
+
     private val _listOfWeightAverages = MediatorLiveData<List<WeightedAverage>>()
 
     val listOfWeightedAverage: LiveData<List<WeightedAverage>>

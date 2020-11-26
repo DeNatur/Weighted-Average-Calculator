@@ -13,9 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:background="@color/green_primary"
         tools:context=".calcuatorresult.ResultFragment">
-
+        
+        <ImageButton
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/ripple"
+            android:onClick="@{() -> resultViewModel.onChangeClick()}"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
             android:id="@+id/strokeTextView"
             android:layout_width="wrap_content"
@@ -88,6 +100,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -105,6 +119,8 @@
                     android:orientation="horizontal"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:layout_marginStart="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -116,6 +132,7 @@
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/buttonName"
+                        android:elevation="20dp"
                         style="@style/RoundedLightYellowButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -130,26 +147,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/changeNotes"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        style="@style/RoundedLightYellowButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:background="@drawable/rounded_ten_dp"
-                        android:onClick="@{() -> resultViewModel.onChangeClick()}"
-                        android:text="@string/back"
-                        android:textSize="14sp" />
-                    <TextView
+                        android:elevation="20dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="32dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:id="@+id/calculateAgain"
                         style="@style/RoundedLightYellowButton"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="wrap_content"
+                        android:layout_height="54dp"
                         android:layout_gravity="center"
                         android:background="@drawable/rounded_ten_dp"
                         android:onClick="@{() -> resultViewModel.onCalculateAgainCLick()}"

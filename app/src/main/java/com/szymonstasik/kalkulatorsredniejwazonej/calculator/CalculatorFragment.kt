@@ -9,12 +9,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentCalculatorBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentMenuBinding
 
 class CalculatorFragment : Fragment() {
+    lateinit var mAdView : AdView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +39,11 @@ class CalculatorFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
+        mAdView = binding.adView
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
+
         val adapter = CalculatorAdapter(CalculatorAdapter.ChangeNoteListener{ position, noteValue ->
                 calculatorViewModel.changeValueOfNote(position, noteValue)
             }, CalculatorAdapter.ChangeWeightListener{position, weightValue ->
@@ -47,6 +55,12 @@ class CalculatorFragment : Fragment() {
         binding.notesAndWeightesRecycler.adapter = adapter
 
 
+        calculatorViewModel.backPressState.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                findNavController().popBackStack()
+                calculatorViewModel.donePopBack()
+            }
+        })
 
         calculatorViewModel.weightedAverage.observe(viewLifecycleOwner, Observer {
             if (it != null)

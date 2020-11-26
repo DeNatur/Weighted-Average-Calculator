@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.AdRequest
 import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.calculator.CalculatorFragmentArgs
 import com.szymonstasik.kalkulatorsredniejwazonej.calculator.CalculatorViewModel
@@ -41,6 +42,10 @@ class HistoryFragment : Fragment() {
 
         binding.historyViewModel = historyViewModel
 
+        var mAdView = binding.adView
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
         historyViewModel.listOfWeightedAverage.observe(viewLifecycleOwner, Observer {
             if (it != null){
                 adapter.submitList(it)
@@ -49,6 +54,13 @@ class HistoryFragment : Fragment() {
                 else
                     binding.noResultsText.visibility = View.GONE
             }else binding.noResultsText.visibility = View.VISIBLE
+        })
+
+        historyViewModel.backPressState.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                findNavController().popBackStack()
+                historyViewModel.donePopBack()
+            }
         })
 
         historyViewModel.navigateToCalculator.observe(viewLifecycleOwner, Observer {

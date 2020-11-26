@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.AdRequest
 import com.kobakei.ratethisapp.RateThisApp
 import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
@@ -34,6 +35,8 @@ class MenuFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
+        binding.rippleBackground.startRippleAnimation();
+
         menuViewModel.navigateToCalculator.observe(viewLifecycleOwner, Observer {
             if (it != null){
                 findNavController().navigate(MenuFragmentDirections.actionMenuFragmentToCalculatorFragment(it))
@@ -43,9 +46,7 @@ class MenuFragment : Fragment() {
 
         binding.historyButton.setOnClickListener { onHistory() }
 
-        val config = RateThisApp.Config(1, 2)
-        RateThisApp.init(config)
-        RateThisApp.onCreate(context);
+
 
         return binding.root
     }
