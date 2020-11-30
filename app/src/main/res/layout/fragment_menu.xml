@@ -11,102 +11,73 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/green_primary"
         android:layout_height="match_parent"
+        android:background="@color/bg_start"
         tools:context=".menu.MenuFragment">
 
-        <LinearLayout
-            android:id="@+id/rippleLayout"
+
+        <com.szymonstasik.kalkulatorsredniejwazonej.utils.CurvedBgView
+            android:id="@+id/curvedBgView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="42dp"
-            android:background="@drawable/rounded_bottom"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/calculateButton"
+            android:layout_marginBottom="32dp"
+            android:background="@color/green_start"
+            app:layout_constraintBottom_toTopOf="@+id/startBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/curvedBgView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.skyfishjy.library.RippleBackground xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/rippleBackground"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="64dp"
-                app:rb_color="@color/green_light"
-                app:rb_duration="6000"
-                app:rb_radius="32dp"
-                app:rb_strokeWidth="10dp"
-                app:rb_rippleAmount="4"
-                app:rb_scale="6"
-                app:rb_type="strokeRipple" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="64dp"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toTopOf="@+id/bg_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/bg_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/ic_calculator"
+                app:layout_constraintBottom_toBottomOf="@+id/curvedBgView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/appImage"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="64dp"
-            android:background="@drawable/white_circle"
-            android:elevation="20dp"
-            android:padding="20dp"
-            android:src="@drawable/icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/rippleLayout"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
-            android:id="@+id/calculateButton"
-            style="@style/RoundedLightYellowButton"
+            android:id="@+id/startBtn"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/rounded_ten_dp"
+            android:textSize="24sp"
+            android:onClick="@{() -> menuViewModel.onStartClick()}"
+            android:fontFamily="@font/ubuntu_bold"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_rec_green"
             android:elevation="20dp"
-            android:onClick="@{() -> menuViewModel.onCalculatorClick()}"
-            android:text="@string/calculate"
-            app:layout_constraintBottom_toTopOf="@+id/historyButton"
-            app:layout_constraintDimensionRatio="w,3:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.52"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/historyButton"
-            style="@style/RoundedLightYellowButton"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="64dp"
-            android:background="@drawable/rounded_ten_dp"
-            android:elevation="20dp"
-            android:text="@string/results"
+            android:text="@string/start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
-            android:id="@+id/appName"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="64dp"
-            android:elevation="20dp"
-            android:fontFamily="@font/ubuntu_bold"
-            android:gravity="center"
-            android:text="@string/app_name"
-            android:textColor="@color/green_primary"
-            android:textSize="32sp"
-            app:layout_constraintBottom_toTopOf="@+id/appImage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -3,6 +3,7 @@
     <string name="hello_blank_fragment">hello</string>
     <string name="calculate">Oblicz</string>
     <string name="history">Historia</string>
+    <string name="start">Start</string>
 
     <string name="choose_note">Wybierz\nOcene</string>
     <string name="choose_weight">Wybierz\nWagę</string>
@@ -11,6 +12,8 @@
     <string name="delete_note">Usuń Ocenę</string>
     <string name="delete">Usunąć</string>
     <string name="edit">Edytować</string>
+    <string name="last_averages">Ostatnie Średnie</string>
+    <string name="list_of_averages">Lista Średnich</string>
 
 
     <string name="weighted_average_name_and_value">Średnia ważona: %.2f</string>

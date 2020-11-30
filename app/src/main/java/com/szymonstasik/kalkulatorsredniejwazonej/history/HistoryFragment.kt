@@ -38,22 +38,19 @@ class HistoryFragment : Fragment() {
 
         val adapter = HistoryWeightedAverageAdapter(historyViewModel)
 
-        binding.weightedAverageRecycler.adapter = adapter
+//        binding.weightedAverageRecycler.adapter = adapter
 
         binding.historyViewModel = historyViewModel
 
-        var mAdView = binding.adView
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
 
         historyViewModel.listOfWeightedAverage.observe(viewLifecycleOwner, Observer {
-            if (it != null){
-                adapter.submitList(it)
-                if (it.isEmpty())
-                    binding.noResultsText.visibility = View.VISIBLE
-                else
-                    binding.noResultsText.visibility = View.GONE
-            }else binding.noResultsText.visibility = View.VISIBLE
+//            if (it != null){
+//                adapter.submitList(it)
+//                if (it.isEmpty())
+//                    binding.noResultsText.visibility = View.VISIBLE
+//                else
+//                    binding.noResultsText.visibility = View.GONE
+//            }else binding.noResultsText.visibility = View.VISIBLE
         })
 
         historyViewModel.backPressState.observe(viewLifecycleOwner, Observer {

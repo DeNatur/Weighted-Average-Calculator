@@ -39,9 +39,9 @@ class CalculatorFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        mAdView = binding.adView
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+//        mAdView = binding.adView
+//        val adRequest = AdRequest.Builder().build()
+//        mAdView.loadAd(adRequest)
 
 
         val adapter = CalculatorAdapter(CalculatorAdapter.ChangeNoteListener{ position, noteValue ->

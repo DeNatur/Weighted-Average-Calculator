@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Weighted Average Calculator</string>
     <string name="hello_blank_fragment">hello</string>
+    <string name="start">Start</string>
     <string name="calculate">Calculate</string>
     <string name="history">History</string>
 
@@ -11,6 +12,8 @@
     <string name="delete_note">Delete Note</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="last_averages">Last Averages</string>
+    <string name="list_of_averages">List of Averages</string>
 
     <string name="weighted_average_name_and_value">Weighted average: %.2f</string>
     <string name="weighted_average">Weighted average: </string>
@@ -34,6 +37,6 @@
     <string name="later">Later</string>
     <string name="no_thanks">Not now</string>
 
-    <string name="no_results">You don\t have any results yet</string>
+    <string name="no_results">You don\'t have any averages</string>
 
 </resources>

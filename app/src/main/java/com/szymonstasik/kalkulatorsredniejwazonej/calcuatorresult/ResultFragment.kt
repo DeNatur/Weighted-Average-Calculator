@@ -34,18 +34,6 @@ class ResultFragment : Fragment() {
             inflater, R.layout.fragment_result, container, false)
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
 
-        var i = sharedPref?.getInt(Statics.AD_COUNTER, 0)
-        if (i != null) {
-            i += 1
-            Log.d("AD CHECK", i.toString())
-            if(i >= 3){
-                var activ: MainActivity = activity as MainActivity
-                activ.mInterstitialAd.loadAd(AdRequest.Builder().build())
-                activ.mInterstitialAd.show()
-            }
-            sharedPref?.edit()?.putInt(Statics.AD_COUNTER, i)?.commit()
-        }
-
         val application = requireNotNull(this.activity).application
 
         val dataSource = WeightedAverageDatabase.getInstance(application).weightedAverageDao

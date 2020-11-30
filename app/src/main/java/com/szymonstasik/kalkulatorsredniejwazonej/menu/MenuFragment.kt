@@ -9,8 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.ads.AdRequest
-import com.kobakei.ratethisapp.RateThisApp
 import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentMenuBinding
@@ -23,11 +21,7 @@ class MenuFragment : Fragment() {
         val binding: FragmentMenuBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_menu, container, false)
 
-        val application = requireNotNull(this.activity).application
-
-        val dataSource = WeightedAverageDatabase.getInstance(application).weightedAverageDao
-
-        val viewModelFactory = MenuViewModelFactory(dataSource)
+        val viewModelFactory = MenuViewModelFactory()
 
         val menuViewModel = ViewModelProvider(this, viewModelFactory)[MenuViewModel::class.java]
 
@@ -35,25 +29,14 @@ class MenuFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        binding.rippleBackground.startRippleAnimation();
-
-        menuViewModel.navigateToCalculator.observe(viewLifecycleOwner, Observer {
-            if (it != null){
-                findNavController().navigate(MenuFragmentDirections.actionMenuFragmentToCalculatorFragment(it))
-                menuViewModel.doneCalculatorNavigating()
+        menuViewModel.navigateToHome.observe(viewLifecycleOwner, Observer {
+            if (it){
+                findNavController().navigate(MenuFragmentDirections.actionMenuFragmentToHistoryFragment())
+                menuViewModel.doneHomeNavigating()
             }
         })
 
-        binding.historyButton.setOnClickListener { onHistory() }
-
-
-
         return binding.root
-    }
-
-
-    private fun onHistory(){
-        findNavController().navigate(MenuFragmentDirections.actionMenuFragmentToHistoryFragment())
     }
 
 }
