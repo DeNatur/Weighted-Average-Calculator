@@ -15,6 +15,7 @@ import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentCalculatorBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentMenuBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CalculatorFragment : Fragment() {
     lateinit var mAdView : AdView
@@ -25,15 +26,7 @@ class CalculatorFragment : Fragment() {
         val binding: FragmentCalculatorBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_calculator, container, false)
 
-        val application = requireNotNull(this.activity).application
-
-        val dataSource = WeightedAverageDatabase.getInstance(application).weightedAverageDao
-
-        val arguments = CalculatorFragmentArgs.fromBundle(requireArguments())
-
-        val viewModelFactory = CalculatorViewModelFactory(arguments.id, dataSource)
-
-        val calculatorViewModel = ViewModelProvider(this, viewModelFactory)[CalculatorViewModel::class.java]
+        val calculatorViewModel by viewModel<Calculat  orViewModel>()
 
         binding.calculatorViewModel = calculatorViewModel
 

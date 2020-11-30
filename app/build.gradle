@@ -78,6 +78,10 @@ dependencies {
     // Android KTX
     implementation "androidx.core:core-ktx:$version_core"
 
+    //Koin
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
     // Room and Lifecycle dependencies
     implementation "androidx.room:room-runtime:$version_room"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

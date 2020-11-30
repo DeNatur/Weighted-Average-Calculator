@@ -1,20 +1,25 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.calculator
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.szymonstasik.kalkulatorsredniejwazonej.core.BaseViewModel
 import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDao
+import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
 import kotlinx.coroutines.*
+import org.koin.core.component.inject
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CalculatorViewModel(private val weightedAverageKey: Long = 0L,
-        val database: WeightedAverageDao): ViewModel() {
+class CalculatorViewModel(context: Application, private val weightedAverageKey: Long = 0L): BaseViewModel(context) {
 
+    private val dataSource: WeightedAverageDatabase by inject()
+    private val database: WeightedAverageDao = dataSource.weightedAverageDao
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
      */

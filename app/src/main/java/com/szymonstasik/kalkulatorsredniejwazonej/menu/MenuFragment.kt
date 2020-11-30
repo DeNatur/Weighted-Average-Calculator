@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentMenuBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MenuFragment : Fragment() {
@@ -21,9 +22,8 @@ class MenuFragment : Fragment() {
         val binding: FragmentMenuBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_menu, container, false)
 
-        val viewModelFactory = MenuViewModelFactory()
 
-        val menuViewModel = ViewModelProvider(this, viewModelFactory)[MenuViewModel::class.java]
+        val menuViewModel by viewModel<MenuViewModel>()
 
         binding.menuViewModel = menuViewModel
 

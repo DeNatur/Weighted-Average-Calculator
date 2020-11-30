@@ -1,15 +1,17 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.menu
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.szymonstasik.kalkulatorsredniejwazonej.core.BaseViewModel
 import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDao
 import kotlinx.coroutines.*
 
-class MenuViewModel() : ViewModel() {
+class MenuViewModel(context: Application) : BaseViewModel(context) {
 
 
     /**
