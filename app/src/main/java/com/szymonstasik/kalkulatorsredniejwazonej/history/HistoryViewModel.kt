@@ -1,16 +1,26 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.history
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.szymonstasik.kalkulatorsredniejwazonej.core.BaseViewModel
 import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDao
+import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
+import com.szymonstasik.kalkulatorsredniejwazonej.utils.CalculatorState
 import kotlinx.coroutines.*
+import org.koin.core.component.inject
 
-class HistoryViewModel(val database: WeightedAverageDao): ViewModel() {
+class HistoryViewModel(context: Application): BaseViewModel(context) {
+
+    private val calculatorState: CalculatorState by inject()
+
+    private val dataSource: WeightedAverageDatabase by inject();
+    private val database: WeightedAverageDao = dataSource.weightedAverageDao;
 
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
@@ -34,9 +44,9 @@ class HistoryViewModel(val database: WeightedAverageDao): ViewModel() {
      *
      * This is private because we don't want to expose setting this value to the Fragment.
      */
-    private val _navigateToCalculator = MutableLiveData<Long>()
+    private val _navigateToCalculator = MutableLiveData<Boolean>()
 
-    val navigateToCalculator: LiveData<Long>
+    val navigateToCalculator: LiveData<Boolean>
         get() {
             return _navigateToCalculator
         }
@@ -67,18 +77,19 @@ class HistoryViewModel(val database: WeightedAverageDao): ViewModel() {
         _listOfWeightAverages.addSource(database.getAllWeightedAverages(), _listOfWeightAverages::setValue)
     }
 
-    fun onEditClick(weightedAverageKey: Long){
-        _navigateToCalculator.value = weightedAverageKey
+    fun onFABClick(){
+        calculatorState.setNewWeightedAverage()
+        _navigateToCalculator.value = true
     }
 
-    fun onDeleteClick(weightedAverage: WeightedAverage){
-        uiScope.launch {
-            delete(weightedAverage)
-        }
-    }
+//    fun onDeleteClick(weightedAverage: WeightedAverage){
+//        uiScope.launch {
+//            delete(weightedAverage)
+//        }
+//    }
 
     fun doneNavigationToCalculator(){
-        _navigateToCalculator.value = null
+        _navigateToCalculator.value = false
     }
 
     fun onCalculatorClick(){
@@ -88,7 +99,7 @@ class HistoryViewModel(val database: WeightedAverageDao): ViewModel() {
             val newWeightedAverage = WeightedAverage(
                 notes = tmpArray
             )
-            _navigateToCalculator.value =  insert(newWeightedAverage)
+//            _navigateToCalculator.value =  insert(newWeightedAverage)
         }
     }
 

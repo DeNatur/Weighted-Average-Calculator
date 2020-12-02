@@ -3,6 +3,7 @@ package com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +14,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
+import com.beloo.widget.chipslayoutmanager.gravity.IChildGravityResolver
 import com.google.android.gms.ads.AdRequest
 import com.kobakei.ratethisapp.RateThisApp
 import com.szymonstasik.kalkulatorsredniejwazonej.MainActivity
 import com.szymonstasik.kalkulatorsredniejwazonej.R
-import com.szymonstasik.kalkulatorsredniejwazonej.calculator.CalculatorFragmentArgs
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentCalculatorBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentResultBinding
+import com.szymonstasik.kalkulatorsredniejwazonej.history.HistoryViewModel
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Statics
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Utils
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ResultFragment : Fragment() {
@@ -32,17 +36,8 @@ class ResultFragment : Fragment() {
         savedInstanceState: Bundle?): View? {
         val binding: FragmentResultBinding =  DataBindingUtil.inflate(
             inflater, R.layout.fragment_result, container, false)
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
 
-        val application = requireNotNull(this.activity).application
-
-        val dataSource = WeightedAverageDatabase.getInstance(application).weightedAverageDao
-
-        val arguments = ResultFragmentArgs.fromBundle(requireArguments())
-
-        val viewModelFactory = ResultViewModelFactory(arguments.weightedAverageKey, dataSource)
-
-        val resultViewModel = ViewModelProvider(this, viewModelFactory)[ResultViewModel::class.java]
+        val resultViewModel by viewModel<ResultViewModel>()
 
         val adapter = ResultNotesAdapter()
 
@@ -54,9 +49,14 @@ class ResultFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        binding.buttonName.setOnClickListener {
-            resultViewModel.onNameNoteNWeightsClick(binding.editTextName.text.toString().trim())
-        }
+        binding.tagsRecycler.layoutManager = ChipsLayoutManager.newBuilder(context)
+            .setChildGravity(Gravity.LEFT)
+            .setScrollingEnabled(false)
+            .setOrientation(ChipsLayoutManager.HORIZONTAL)
+            .setRowStrategy(ChipsLayoutManager.STRATEGY_DEFAULT)
+            .withLastRow(true)
+            .build()
+
 
         resultViewModel.result.observe(viewLifecycleOwner, Observer {
             binding.resultText.text = getString(R.string.weighted_average_name_and_value, it)
@@ -69,10 +69,10 @@ class ResultFragment : Fragment() {
             }
         })
 
-        resultViewModel.navigateToCalculator.observe(viewLifecycleOwner, Observer {
-            if (it != null){
-                findNavController().navigate(ResultFragmentDirections.actionResultFragmentToCalculatorFragment(it))
-                resultViewModel.onDoneNavigatingToCalculator()
+        resultViewModel.backPressState.observe(viewLifecycleOwner, Observer {
+            if (it){
+                findNavController().popBackStack()
+                resultViewModel.donePopBack()
             }
         })
 

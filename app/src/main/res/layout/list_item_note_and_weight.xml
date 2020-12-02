@@ -16,13 +16,13 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_marginTop="4dp"
-            android:background="@color/white"
+            android:background="@color/color_separator"
             android:layout_marginBottom="4dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
@@ -39,11 +39,12 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1" />
-        <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
+        <TextView
             android:id="@+id/nodeNumberText"
             android:layout_width="wrap_content"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textColor="@color/color_text"
             android:fontFamily="@font/ubuntu_regular"
             android:text="@{@string/note_nr(position +1)}"
             android:layout_height="wrap_content" />
@@ -60,7 +61,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="4dp"
-            android:background="@color/white"
+            android:background="@color/color_separator"
             android:layout_marginBottom="4dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>

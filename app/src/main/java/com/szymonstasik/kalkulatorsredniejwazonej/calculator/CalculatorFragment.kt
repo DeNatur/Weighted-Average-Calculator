@@ -26,16 +26,11 @@ class CalculatorFragment : Fragment() {
         val binding: FragmentCalculatorBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_calculator, container, false)
 
-        val calculatorViewModel by viewModel<Calculat  orViewModel>()
+        val calculatorViewModel by viewModel<CalculatorViewModel>()
 
         binding.calculatorViewModel = calculatorViewModel
 
         binding.lifecycleOwner = this
-
-//        mAdView = binding.adView
-//        val adRequest = AdRequest.Builder().build()
-//        mAdView.loadAd(adRequest)
-
 
         val adapter = CalculatorAdapter(CalculatorAdapter.ChangeNoteListener{ position, noteValue ->
                 calculatorViewModel.changeValueOfNote(position, noteValue)
@@ -61,10 +56,9 @@ class CalculatorFragment : Fragment() {
         })
 
         calculatorViewModel.navigateToResult.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
+            if (it) {
                 findNavController().navigate(
-                    CalculatorFragmentDirections.actionCalculatorFragmentToResultFragment(
-                        it))
+                    CalculatorFragmentDirections.actionCalculatorFragmentToResultFragment())
                 calculatorViewModel.doneNavigatingToResult()
             }
         })

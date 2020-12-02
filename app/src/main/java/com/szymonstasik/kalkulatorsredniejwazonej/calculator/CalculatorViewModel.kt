@@ -11,41 +11,25 @@ import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDao
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
+import com.szymonstasik.kalkulatorsredniejwazonej.utils.CalculatorState
 import kotlinx.coroutines.*
 import org.koin.core.component.inject
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CalculatorViewModel(context: Application, private val weightedAverageKey: Long = 0L): BaseViewModel(context) {
+class CalculatorViewModel(context: Application): BaseViewModel(context) {
 
-    private val dataSource: WeightedAverageDatabase by inject()
-    private val database: WeightedAverageDao = dataSource.weightedAverageDao
-    /**
-     * viewModelJob allows us to cancel all coroutines started by this ViewModel.
-     */
-    private var viewModelJob = Job()
+    private val calculatorState: CalculatorState by inject()
 
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    /**
-     * Called when the ViewModel is dismantled.
-     * At this point, we want to cancel all coroutines;
-     * otherwise we end up with processes that have nowhere to return to
-     * using memory and resources.
-     */
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
     /**
      * Variable that tells the Fragment to navigate to a specific [ResultFragment]
      *
      * This is private because we don't want to expose setting this value to the Fragment.
      */
 
-    private val _navigateToResults = MutableLiveData<Long>()
+    private val _navigateToResults = MutableLiveData<Boolean>()
 
-    val navigateToResult: LiveData<Long>
+    val navigateToResult: LiveData<Boolean>
     get() {
         return _navigateToResults
     }
@@ -53,8 +37,17 @@ class CalculatorViewModel(context: Application, private val weightedAverageKey: 
     private val _backPressState = MutableLiveData<Boolean>()
 
     val backPressState: LiveData<Boolean>
+
     get(){
         return _backPressState
+    }
+
+    fun donePopBack(){
+        _backPressState.value = false
+    }
+
+    fun onBackPressed(){
+        _backPressState.value = true
     }
 
     private val _weightedAverage = MutableLiveData<WeightedAverage>()
@@ -64,18 +57,22 @@ class CalculatorViewModel(context: Application, private val weightedAverageKey: 
             return _weightedAverage
         }
 
+    init {
+        _weightedAverage.value = calculatorState.currentWeightedAverage
+        _backPressState.value = false
+    }
+
     fun onCalculateClick(){
-        uiScope.launch {
-            _weightedAverage.value?.let { update(it) }
-            _navigateToResults.value = weightedAverageKey
+        val average = _weightedAverage.value;
+        if(average != null){
+            calculatorState.currentWeightedAverage = average
+            _navigateToResults.value = true
         }
     }
 
     fun doneNavigatingToResult(){
-        _navigateToResults.value = null
+        _navigateToResults.value = false
     }
-
-
 
     fun addNewNote(){
         val note = _weightedAverage.value
@@ -128,29 +125,7 @@ class CalculatorViewModel(context: Application, private val weightedAverageKey: 
         note?.notes = list
         _weightedAverage.value = note
     }
-    fun donePopBack(){
-        _backPressState.value = false
-    }
-    fun onBackPressed(){
-        _backPressState.value = true
-    }
 
-    init {
-        _backPressState.value = false
-        uiScope.launch {
-            _weightedAverage.value = getWeightedAverage(weightedAverageKey)
-        }
-    }
 
-    private suspend fun getWeightedAverage(key: Long) : WeightedAverage? {
-        return withContext(Dispatchers.IO) {
-            database.get(key)
-        }
-    }
 
-    private suspend fun update(weightedAverage: WeightedAverage) {
-        withContext(Dispatchers.IO) {
-            database.update(weightedAverage)
-        }
-    }
 }

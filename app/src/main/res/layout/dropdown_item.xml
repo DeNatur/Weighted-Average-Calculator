@@ -19,6 +19,8 @@
 -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
+    android:textColor="@color/color_title"
+    android:textSize="18sp"
     style="?android:attr/dropDownItemStyle"
     android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
     android:singleLine="true"

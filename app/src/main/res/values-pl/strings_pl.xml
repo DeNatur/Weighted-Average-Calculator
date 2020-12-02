@@ -21,7 +21,7 @@
     <string name="results">Wyniki</string>
     <string name="notes">Oceny</string>
     <string name="weights">Wagi</string>
-    <string name="name_result">Nazwij wynik</string>
+    <string name="name_result">Nazwa wyniku:</string>
     <string name="calculate_once_again">Policz następną średnią</string>
     <string name="back">Cofnij</string>
     <string name="change_notes">Zmień Oceny</string>
@@ -37,6 +37,10 @@
     <string name="sure">Pewnie!</string>
     <string name="later">Później</string>
     <string name="no_thanks">Nie teraz</string>
+    <string name="save">Zapisz</string>
+    <string name="not_save">Nie zapisuj</string>
+    <string name="tags">Oznaczenia:</string>
+    <string name="change_tags">Zmień</string>
 
     <string name="no_results">Nie masz jeszcze żadnych wyników</string>
 

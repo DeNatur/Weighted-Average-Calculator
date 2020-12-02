@@ -74,10 +74,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$version_appcompat"
     implementation "androidx.fragment:fragment:$version_fragment"
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
-
+    implementation 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
     // Android KTX
     implementation "androidx.core:core-ktx:$version_core"
-
     //Koin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"

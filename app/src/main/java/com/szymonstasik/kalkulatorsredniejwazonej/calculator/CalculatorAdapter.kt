@@ -1,6 +1,8 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.calculator
 
-import android.provider.ContactsContract
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.ListItemNoteAndWeightBinding
-import com.szymonstasik.kalkulatorsredniejwazonej.utils.Statics
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Utils
 
-class CalculatorAdapter(val changeNoteListener: ChangeNoteListener,
-                        val changeWeightListener: ChangeWeightListener): ListAdapter<NoteNWeight,
+
+class CalculatorAdapter(
+    val changeNoteListener: ChangeNoteListener,
+    val changeWeightListener: ChangeWeightListener
+): ListAdapter<NoteNWeight,
         CalculatorAdapter.ViewHolder>(NoteNWeightDiffCallback()) {
 
 
@@ -26,16 +30,18 @@ class CalculatorAdapter(val changeNoteListener: ChangeNoteListener,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) as NoteNWeight
-        holder.bind(changeNoteListener, changeWeightListener,item)
+        holder.bind(changeNoteListener, changeWeightListener, item)
     }
 
 
     class ViewHolder private constructor(private val binding: ListItemNoteAndWeightBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(changeNoteListener: ChangeNoteListener,
-                 changeWeightListener: ChangeWeightListener,
-                 item: NoteNWeight) {
+        fun bind(
+            changeNoteListener: ChangeNoteListener,
+            changeWeightListener: ChangeWeightListener,
+            item: NoteNWeight
+        ) {
             binding.noteNWeight = item
             binding.executePendingBindings()
             binding.position = adapterPosition
@@ -53,13 +59,31 @@ class CalculatorAdapter(val changeNoteListener: ChangeNoteListener,
             for(i in 1..100){
                 noteWeights.add(i.toString())
             }
-            var noteAdapter = ArrayAdapter<String>(binding.root.context, android.R.layout.simple_dropdown_item_1line, noteNumbers)
-            noteAdapter.setDropDownViewResource(R.layout.dropdown_item)
+            var noteAdapter = ArrayAdapter<String>(
+                binding.root.context,
+                R.layout.dropdown_item,
+                noteNumbers
+            )
+
+            val spinnerDrawable: Drawable = binding.noteSpinner.background.constantState!!.newDrawable()
+
+            spinnerDrawable.setColorFilter(
+                binding.root.context.resources.getColor(R.color.color_title),
+                PorterDuff.Mode.SRC_ATOP
+            )
+
+            binding.noteSpinner.background = spinnerDrawable
+            binding.weightSpinner.background = spinnerDrawable
+            noteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.noteSpinner.adapter = noteAdapter
             binding.noteSpinner.setSelection(item.note)
 
             //Setting adapter for Weight Spinner
-            var weightAdapter = ArrayAdapter<String>(binding.root.context, android.R.layout.simple_dropdown_item_1line, noteWeights)
+            var weightAdapter = ArrayAdapter<String>(
+                binding.root.context,
+                R.layout.dropdown_item,
+                noteWeights
+            )
             weightAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.weightSpinner.adapter = weightAdapter
             binding.weightSpinner.setSelection(item.weight)
@@ -67,7 +91,12 @@ class CalculatorAdapter(val changeNoteListener: ChangeNoteListener,
             binding.noteSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
 
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     changeNoteListener.onChange(adapterPosition, position)
                 }
             }
@@ -75,7 +104,12 @@ class CalculatorAdapter(val changeNoteListener: ChangeNoteListener,
             binding.weightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
 
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     changeWeightListener.onChange(adapterPosition, position)
                 }
             }

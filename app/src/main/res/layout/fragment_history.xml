@@ -118,11 +118,14 @@
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> historyViewModel.onFABClick()}"
             android:layout_marginEnd="24dp"
+            app:srcCompat="@drawable/ic_baseline_add_24"
+            android:backgroundTint="@color/automn"
             android:layout_marginBottom="24dp"
-            app:rippleColor="@color/green_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

@@ -11,12 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.szymonstasik.kalkulatorsredniejwazonej.R
-import com.szymonstasik.kalkulatorsredniejwazonej.calculator.CalculatorFragmentArgs
-import com.szymonstasik.kalkulatorsredniejwazonej.calculator.CalculatorViewModel
-import com.szymonstasik.kalkulatorsredniejwazonej.calculator.CalculatorViewModelFactory
-import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
-import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentCalculatorBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentHistoryBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HistoryFragment : Fragment() {
@@ -28,29 +24,16 @@ class HistoryFragment : Fragment() {
         val binding: FragmentHistoryBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_history, container, false)
 
-        val application = requireNotNull(this.activity).application
-
-        val dataSource = WeightedAverageDatabase.getInstance(application).weightedAverageDao
-
-        val viewModelFactory = HistoryViewModelFactory(dataSource)
-
-        val historyViewModel = ViewModelProvider(this, viewModelFactory)[HistoryViewModel::class.java]
+        val historyViewModel by viewModel<HistoryViewModel>()
 
         val adapter = HistoryWeightedAverageAdapter(historyViewModel)
 
-//        binding.weightedAverageRecycler.adapter = adapter
 
         binding.historyViewModel = historyViewModel
 
 
         historyViewModel.listOfWeightedAverage.observe(viewLifecycleOwner, Observer {
-//            if (it != null){
-//                adapter.submitList(it)
-//                if (it.isEmpty())
-//                    binding.noResultsText.visibility = View.VISIBLE
-//                else
-//                    binding.noResultsText.visibility = View.GONE
-//            }else binding.noResultsText.visibility = View.VISIBLE
+
         })
 
         historyViewModel.backPressState.observe(viewLifecycleOwner, Observer {
@@ -61,8 +44,8 @@ class HistoryFragment : Fragment() {
         })
 
         historyViewModel.navigateToCalculator.observe(viewLifecycleOwner, Observer {
-            if (it != null){
-                findNavController().navigate(HistoryFragmentDirections.actionHistoryFragmentToCalculatorFragment(it))
+            if (it){
+                findNavController().navigate(HistoryFragmentDirections.actionHistoryFragmentToCalculatorFragment())
                 historyViewModel.doneNavigationToCalculator()
             }
         })

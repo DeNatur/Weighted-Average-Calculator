@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Converters
 
 
@@ -12,14 +14,14 @@ import com.szymonstasik.kalkulatorsredniejwazonej.utils.Converters
  * A database that stores WeightedAverage information.
  * And a global method to get access to the database.
  */
-@Database(entities = [WeightedAverage::class], version = 1, exportSchema = false)
+@Database(entities = [WeightedAverage::class, AverageTag::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class WeightedAverageDatabase : RoomDatabase() {
-
     /**
      * Connects the database to the DAO.
      */
     abstract val weightedAverageDao: WeightedAverageDao
+    abstract val averageTagsDao: AverageTagsDao
 
     /**
      * Define a companion object, this allows us to add functions on WeightedAverageDatabase class.
@@ -77,4 +79,5 @@ abstract class WeightedAverageDatabase : RoomDatabase() {
             }
         }
     }
+
 }

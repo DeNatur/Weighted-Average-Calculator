@@ -58,12 +58,12 @@ class HistoryWeightedAverageAdapter(private val historyViewModel: HistoryViewMod
             binding.historyViewModel = historyViewModel
 
             binding.deleteNote.setOnClickListener {
-                historyViewModel.onDeleteClick(item)
+//                historyViewModel.onDeleteClick(item)
                 dialog.dismiss()
             }
 
             binding.editNote.setOnClickListener {
-                historyViewModel.onEditClick(item.id)
+//                historyViewModel.onEditClick(item.id)
                 dialog.dismiss()
             }
             dialog.setContentView(binding.root)

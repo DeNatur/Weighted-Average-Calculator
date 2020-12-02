@@ -18,7 +18,22 @@ data class WeightedAverage(
     var name: String = "",
 
     @ColumnInfo(name = "notes")
-    var notes: List<NoteNWeight>
+    var notes: List<NoteNWeight>,
+
+    @ColumnInfo(name = "tags")
+    var tags: List<AverageTag> = ArrayList()
+)
+
+@Entity(tableName = "average_tags_table")
+data class AverageTag(
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0L,
+
+    @ColumnInfo(name = "color")
+    var color: Int = 0,
+
+    @ColumnInfo(name = "name")
+    var name: String = ""
 )
 
 data class NoteNWeight(

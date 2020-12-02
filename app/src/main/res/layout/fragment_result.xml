@@ -15,31 +15,37 @@
         android:id="@+id/parent"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:background="@color/green_primary"
+        android:background="@color/bg_start"
         tools:context=".calcuatorresult.ResultFragment">
-        
-        <ImageButton
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/ripple"
-            android:onClick="@{() -> resultViewModel.onChangeClick()}"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
-            android:id="@+id/strokeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/ubuntu_bold"
-            android:text="@string/results"
-            android:textColor="@color/white"
-            android:textSize="24sp"
+
+        <RelativeLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/green_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ripple"
+                android:onClick="@{() -> resultViewModel.onBackPressed()}"
+                android:src="@drawable/ic_baseline_arrow_back_24" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:text="@string/results"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -49,7 +55,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/strokeTextView">
+            app:layout_constraintTop_toBottomOf="@+id/appBar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,28 +69,28 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:fontFamily="@font/ubuntu_bold"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/ubuntu_medium"
                         android:text="@string/notes"
-                        android:textSize="20sp"
-                        android:textColor="@color/white" />
+                        android:textSize="18sp"
+                        android:textColor="@color/color_text" />
 
                     <View
                         android:layout_width="0dp"
                         android:layout_height="1dp"
                         android:layout_weight="1" />
 
-                    <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
-                        android:fontFamily="@font/ubuntu_bold"
+                        android:layout_marginEnd="24dp"
+                        android:fontFamily="@font/ubuntu_medium"
                         android:text="@string/weights"
-                        android:textSize="20sp"
-                        android:textColor="@color/white" />
+                        android:textSize="18sp"
+                        android:textColor="@color/color_text" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -95,29 +101,47 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </LinearLayout>
 
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="4dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_width="match_parent"
+                android:background="@color/color_text"
+                android:layout_height="1dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
-                <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
+                <TextView
                     android:id="@+id/resultText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="32dp"
-                    android:fontFamily="@font/ubuntu_bold"
-                    android:textColor="@color/white"
-                    android:textSize="24sp" />
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:textColor="@color/color_text"
+                    android:textSize="18sp" />
 
+                <TextView
+                    android:id="@+id/resultNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/name_result"
+                    android:fontFamily="@font/ubuntu_regular"
+                    android:textColor="@color/color_text"
+                    android:textSize="18sp" />
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:clipChildren="false"
                     android:clipToPadding="false"
@@ -127,20 +151,44 @@
                     <EditText
                         android:id="@+id/editTextName"
                         android:layout_weight="1"
+                        android:textColor="@color/color_title"
+                        android:fontFamily="@font/ubuntu_regular"
+                        android:backgroundTint="@color/color_text"
                         android:layout_width="0dp"
                         android:layout_marginEnd="16dp"
                         android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/buttonName"
-                        android:elevation="20dp"
-                        style="@style/RoundedLightYellowButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/rounded_ten_dp"
-                        android:text="@string/name_result"
-                        android:textSize="14sp" />
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/tagText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/tags"
+                    android:fontFamily="@font/ubuntu_regular"
+                    android:textColor="@color/color_text"
+                    android:textSize="18sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tagsRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp" />
+                <TextView
+                    android:id="@+id/tagButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/change_tags"
+                    android:fontFamily="@font/ubuntu_bold"
+                    android:textColor="@color/color_text"
+                    android:textSize="18sp" />
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_marginTop="32dp"
@@ -152,16 +200,33 @@
                         android:layout_marginBottom="32dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:id="@+id/calculateAgain"
+                        android:id="@+id/notSave"
                         style="@style/RoundedLightYellowButton"
                         android:layout_width="0dp"
+                        android:textColor="@color/color_text"
+                        android:layout_weight="1"
+                        android:layout_height="54dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:layout_gravity="center"
+                        android:text="@string/not_save"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:elevation="20dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="32dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:id="@+id/save"
+                        style="@style/RoundedLightYellowButton"
+                        android:layout_width="0dp"
+                        android:textColor="@color/white"
                         android:layout_weight="1"
                         android:layout_height="54dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/rounded_ten_dp"
+                        android:background="@drawable/rounded_rec_green"
                         android:onClick="@{() -> resultViewModel.onCalculateAgainCLick()}"
-                        android:text="@string/calculate_once_again"
-                        android:textSize="14sp" />
+                        android:text="@string/save"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
             </LinearLayout>

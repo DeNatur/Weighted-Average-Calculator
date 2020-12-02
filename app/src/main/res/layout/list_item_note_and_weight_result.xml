@@ -12,22 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
+        <TextView
             android:id="@+id/noteText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:fontFamily="@font/ubuntu_regular"
-            android:textColor="@color/white"
+            android:textColor="@color/color_title"
             note="@{noteNWeight}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.szymonstasik.kalkulatorsredniejwazonej.utils.StrokeTextView
+        <TextView
             android:id="@+id/weightText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,9 +35,9 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
             weight="@{noteNWeight}"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:fontFamily="@font/ubuntu_regular"
-            android:textColor="@color/white"
+            android:textColor="@color/color_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

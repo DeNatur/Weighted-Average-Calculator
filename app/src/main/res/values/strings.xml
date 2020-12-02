@@ -20,7 +20,7 @@
     <string name="results">Results</string>
     <string name="notes">Notes</string>
     <string name="weights">Weights</string>
-    <string name="name_result">Name result</string>
+    <string name="name_result">Name result:</string>
     <string name="calculate_once_again">Calculate next</string>
     <string name="back">Back</string>
     <string name="change_notes">Change Notes</string>
@@ -36,6 +36,10 @@
     <string name="sure">Sure!</string>
     <string name="later">Later</string>
     <string name="no_thanks">Not now</string>
+    <string name="save">Save</string>
+    <string name="not_save">Not save</string>
+    <string name="tags">Tags:</string>
+    <string name="change_tags">Change</string>
 
     <string name="no_results">You don\'t have any averages</string>
 

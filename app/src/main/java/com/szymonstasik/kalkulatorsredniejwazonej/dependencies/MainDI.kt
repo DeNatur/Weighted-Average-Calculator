@@ -5,5 +5,6 @@ package com.szymonstasik.kalkulatorsredniejwazonej.dependencies
  */
 val appComponent = listOf(
     viewModelDependency,
-    databaseDependency
+    databaseDependency,
+    calculatorStateDependency
 )

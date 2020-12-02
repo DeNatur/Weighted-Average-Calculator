@@ -1,18 +1,27 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.szymonstasik.kalkulatorsredniejwazonej.core.BaseViewModel
 import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDao
+import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
+import com.szymonstasik.kalkulatorsredniejwazonej.utils.CalculatorState
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Utils
 import kotlinx.coroutines.*
+import org.koin.core.component.inject
 
-class ResultViewModel(private val weightedAverageKey: Long = 0L,
-                      private val database: WeightedAverageDao): ViewModel() {
+class ResultViewModel(context: Application): BaseViewModel(context) {
+
+    private val calculatorState: CalculatorState by inject()
+
+    private val dataSource: WeightedAverageDatabase by inject()
+    private val database: WeightedAverageDao = dataSource.weightedAverageDao;
 
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
@@ -54,9 +63,22 @@ class ResultViewModel(private val weightedAverageKey: Long = 0L,
             return _navigateToHistory
         }
 
-    fun onChangeClick(){
-        _navigateToCalculator.value = weightedAverageKey
+    private val _backPressState = MutableLiveData<Boolean>()
+
+    val backPressState: LiveData<Boolean>
+
+        get(){
+            return _backPressState
+        }
+
+    fun donePopBack(){
+        _backPressState.value = false
     }
+
+    fun onBackPressed(){
+        _backPressState.value = true
+    }
+
     fun onCalculateAgainCLick(){
         uiScope.launch {
             var tmpArray = ArrayList<NoteNWeight>()
@@ -80,17 +102,15 @@ class ResultViewModel(private val weightedAverageKey: Long = 0L,
         _navigateToHistory.value = false
     }
 
-    fun onDoneNavigatingToCalculator(){
-        _navigateToCalculator.value = null
-    }
     val result: LiveData<Float>
         get() {
             return _result
         }
 
     init {
+        _weightedAverage.value = calculatorState.currentWeightedAverage
         uiScope.launch {
-            _weightedAverage.value = getWeightedAverage(weightedAverageKey)
+//            _weightedAverage.value = getWeightedAverage(weightedAverageKey)
             instantinateResult()
         }
     }
