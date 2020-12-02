@@ -85,6 +85,7 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
             tmpArray.add(NoteNWeight())
             val newWeightedAverage = WeightedAverage(
                 notes = tmpArray
+
             )
             _navigateToCalculator.value =  insert(newWeightedAverage)
         }

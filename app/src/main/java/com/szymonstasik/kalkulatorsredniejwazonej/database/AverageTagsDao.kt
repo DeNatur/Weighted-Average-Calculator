@@ -60,11 +60,11 @@ interface AverageTagsDao {
      * sorted by start time in descending order.
      */
     @Query("SELECT * FROM average_tags_table ORDER BY id DESC")
-    fun getAllWeightedAverages(): LiveData<List<AverageTag>>
+    fun getAllTags(): LiveData<List<AverageTag>>
 
     /**
      * Selects and returns the weighted average with given id.
      */
     @Query("SELECT * from average_tags_table WHERE id = :key")
-    fun getWeightedAverageWithId(key: Long): LiveData<List<AverageTag>>
+    fun getTagWithId(key: Long): LiveData<List<AverageTag>>
 }
