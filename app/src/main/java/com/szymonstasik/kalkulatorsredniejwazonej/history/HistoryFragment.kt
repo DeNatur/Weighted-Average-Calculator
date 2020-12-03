@@ -16,6 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HistoryFragment : Fragment() {
+    val historyViewModel by viewModel<HistoryViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,11 +25,9 @@ class HistoryFragment : Fragment() {
         val binding: FragmentHistoryBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_history, container, false)
 
-        val historyViewModel by viewModel<HistoryViewModel>()
 
         val adapter = HistoryWeightedAverageAdapter(historyViewModel)
-
-
+        
         binding.historyViewModel = historyViewModel
 
 

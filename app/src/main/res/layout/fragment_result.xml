@@ -184,7 +184,7 @@
                     android:layout_gravity="left"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:text="@string/change_tags"
+                    android:text="@string/change"
                     android:fontFamily="@font/ubuntu_bold"
                     android:textColor="@color/color_text"
                     android:textSize="18sp" />

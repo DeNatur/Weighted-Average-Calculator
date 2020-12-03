@@ -39,7 +39,9 @@
     <string name="save">Save</string>
     <string name="not_save">Not save</string>
     <string name="tags">Tags:</string>
-    <string name="change_tags">Change</string>
+    <string name="change">Change</string>
+    <string name="change_tags">Change Tags</string>
+    <string name="name">Name:</string>
 
     <string name="no_results">You don\'t have any averages</string>
 

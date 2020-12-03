@@ -40,7 +40,10 @@
     <string name="save">Zapisz</string>
     <string name="not_save">Nie zapisuj</string>
     <string name="tags">Oznaczenia:</string>
-    <string name="change_tags">Zmień</string>
+    <string name="change">Zmień</string>
+    <string name="change_tags">Zmień oznaczenia</string>
+    <string name="name">Nazwa:</string>
+
 
     <string name="no_results">Nie masz jeszcze żadnych wyników</string>
 

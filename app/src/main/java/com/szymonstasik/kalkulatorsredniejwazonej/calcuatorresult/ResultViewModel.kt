@@ -1,11 +1,8 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.szymonstasik.kalkulatorsredniejwazonej.core.BaseViewModel
 import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
@@ -21,7 +18,8 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
     private val calculatorState: CalculatorState by inject()
 
     private val dataSource: WeightedAverageDatabase by inject()
-    private val database: WeightedAverageDao = dataSource.weightedAverageDao;
+    private val weigtedAverageDatabase: WeightedAverageDao = dataSource.weightedAverageDao;
+    private val averageTagsDatabase: WeightedAverageDao = dataSource.weightedAverageDao;
 
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
@@ -133,19 +131,19 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
 
     private suspend fun getWeightedAverage(key: Long) : WeightedAverage? {
         return withContext(Dispatchers.IO) {
-            database.get(key)
+            weigtedAverageDatabase.get(key)
         }
     }
 
     private suspend fun update(weightedAverage: WeightedAverage) {
         withContext(Dispatchers.IO) {
-            database.update(weightedAverage)
+            weigtedAverageDatabase.update(weightedAverage)
         }
     }
 
     private suspend fun insert(weightedAverage: WeightedAverage): Long {
         return withContext(Dispatchers.IO) {
-            database.insert(weightedAverage)
+            weigtedAverageDatabase.insert(weightedAverage)
         }
     }
 }

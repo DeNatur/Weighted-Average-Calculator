@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="resultViewModel"
+            type="com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult.ResultViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_ten_dp">
+
+        <TextView
+            android:id="@+id/changeTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/ubuntu_medium"
+            android:text="@string/change_tags"
+            android:textColor="@color/color_text"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/title_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/changeTags"
+            android:orientation="vertical" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tagsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_separator" />
+
+        <TextView
+            android:id="@+id/nameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/ubuntu_medium"
+            android:text="@string/name"
+            android:textColor="@color/color_text"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tagsRecycler" />
+
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/color_text"
+            android:fontFamily="@font/ubuntu_regular"
+            android:textColor="@color/color_title"
+            app:layout_constraintEnd_toStartOf="@+id/fabButton"
+            app:layout_constraintStart_toEndOf="@+id/nameTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tagsRecycler" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:fabSize="mini"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/automn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tagsRecycler"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:id="@+id/circle_layout"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/editTextName"
+            app:layout_constraintStart_toStartOf="@+id/nameTitle"
+            app:layout_constraintTop_toBottomOf="@id/editTextName"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/circlePink"
+                android:layout_width="16dp"
+                android:backgroundTint="@color/green_primary"
+                android:layout_marginHorizontal="6dp"
+                android:src="@drawable/circle_outline"
+                android:layout_height="16dp" />
+            <ImageView
+                android:id="@+id/circleAutomn"
+                android:layout_width="16dp"
+                android:layout_marginHorizontal="6dp"
+                android:src="@drawable/circle_outline"
+                android:layout_height="16dp" />
+            <ImageView
+                android:id="@+id/circleText"
+                android:layout_width="16dp"
+                android:layout_marginHorizontal="6dp"
+                android:src="@drawable/circle_outline"
+                android:layout_height="16dp" />
+            <ImageView
+                android:id="@+id/circleViolet"
+                android:layout_width="16dp"
+                android:layout_marginHorizontal="6dp"
+                android:src="@drawable/circle_outline"
+                android:layout_height="16dp" />
+            <ImageView
+                android:id="@+id/circleRed"
+                android:layout_width="16dp"
+                android:layout_marginHorizontal="6dp"
+                android:src="@drawable/circle_outline"
+                android:layout_height="16dp" />
+            <ImageView
+                android:id="@+id/circleBlack"
+                android:layout_width="16dp"
+                android:layout_marginHorizontal="6dp"
+                android:src="@drawable/circle_outline"
+                android:layout_height="16dp" />
+            <ImageView
+                android:id="@+id/circleGreen"
+                android:layout_width="16dp"
+                android:layout_marginHorizontal="6dp"
+                android:src="@drawable/circle_outline"
+                android:layout_height="16dp" />
+            <ImageView
+                android:id="@+id/circleYellow"
+                android:layout_width="16dp"
+                android:layout_marginHorizontal="6dp"
+                android:src="@drawable/circle_outline"
+                android:layout_height="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/circle_layout">
+
+            <TextView
+                android:id="@+id/notSave"
+                style="@style/RoundedLightYellowButton"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginVertical="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:elevation="20dp"
+                android:fontFamily="@font/ubuntu_bold"
+                android:text="@string/not_save"
+                android:textColor="@color/color_text"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/save"
+                style="@style/RoundedLightYellowButton"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginVertical="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_rec_green"
+                android:elevation="20dp"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

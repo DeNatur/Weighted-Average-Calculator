@@ -1,12 +1,10 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
@@ -20,7 +18,9 @@ import com.google.android.gms.ads.AdRequest
 import com.kobakei.ratethisapp.RateThisApp
 import com.szymonstasik.kalkulatorsredniejwazonej.MainActivity
 import com.szymonstasik.kalkulatorsredniejwazonej.R
+import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
+import com.szymonstasik.kalkulatorsredniejwazonej.databinding.DialogWeightAverageChooserBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentCalculatorBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentResultBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.history.HistoryViewModel
@@ -30,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ResultFragment : Fragment() {
+    val resultViewModel by viewModel<ResultViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +38,6 @@ class ResultFragment : Fragment() {
         val binding: FragmentResultBinding =  DataBindingUtil.inflate(
             inflater, R.layout.fragment_result, container, false)
 
-        val resultViewModel by viewModel<ResultViewModel>()
 
         val adapter = ResultNotesAdapter()
 
@@ -84,6 +84,28 @@ class ResultFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    private fun showTagsDialog(context: Context){
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        val layoutInflater = LayoutInflater.from(context)
+        val binding: DialogWeightAverageChooserBinding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.dialog_weight_average_chooser, null, false)
+
+//        binding.resultViewModel =  resultViewModel
+
+//        binding.deleteNote.setOnClickListener {
+////                historyViewModel.onDeleteClick(item)
+//            dialog.dismiss()
+//        }
+//
+//        binding.editNote.setOnClickListener {
+////                historyViewModel.onEditClick(item.id)
+//            dialog.dismiss()
+//        }
+        dialog.setContentView(binding.root)
+        dialog.show()
     }
 
     private fun setupUI(view: View) {

@@ -21,4 +21,9 @@
     <color name="green_alternative">#00693c</color>
     <color name="grey">#494646</color>
     <color name="grey_light">#FAFAFA</color>
+
+    <color name="pink">#FF748F</color>
+    <color name="violet">#6629AB</color>
+    <color name="red">#F12727</color>
+    <color name="yellow">#EED600</color>
 </resources>
