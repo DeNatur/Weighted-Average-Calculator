@@ -1,11 +1,9 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.history
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.szymonstasik.kalkulatorsredniejwazonej.core.BaseViewModel
 import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
@@ -74,7 +72,7 @@ class HistoryViewModel(context: Application): BaseViewModel(context) {
         }
 
     init {
-        _listOfWeightAverages.addSource(database.getAllWeightedAverages(), _listOfWeightAverages::setValue)
+        _listOfWeightAverages.addSource(database.getAllAverageTags(), _listOfWeightAverages::setValue)
     }
 
     fun onFABClick(){

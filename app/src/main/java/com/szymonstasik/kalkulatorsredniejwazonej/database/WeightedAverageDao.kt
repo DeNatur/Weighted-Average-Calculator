@@ -10,6 +10,7 @@ import androidx.room.*
 @Dao
 interface WeightedAverageDao {
 
+
     /**
      * Insert new value to a table
      *

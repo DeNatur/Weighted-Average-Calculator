@@ -1,4 +1,4 @@
-package com.szymonstasik.kalkulatorsredniejwazonej.database
+   package com.szymonstasik.kalkulatorsredniejwazonej.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -60,7 +60,7 @@ interface AverageTagsDao {
      * sorted by start time in descending order.
      */
     @Query("SELECT * FROM average_tags_table ORDER BY id DESC")
-    fun getAllTags(): LiveData<List<AverageTag>>
+    fun getAllTags(): List<AverageTag>
 
     /**
      * Selects and returns the weighted average with given id.

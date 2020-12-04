@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +65,7 @@
 
         <EditText
             android:id="@+id/editTextName"
-            android:layout_width="0dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
@@ -90,72 +91,81 @@
             app:srcCompat="@drawable/ic_baseline_add_24" />
 
         <LinearLayout
-            android:layout_width="0dp"
             android:id="@+id/circle_layout"
-            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintEnd_toEndOf="@+id/editTextName"
-            app:layout_constraintStart_toStartOf="@+id/nameTitle"
-            app:layout_constraintTop_toBottomOf="@id/editTextName"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextName">
 
             <ImageView
                 android:id="@+id/circlePink"
                 android:layout_width="16dp"
-                android:backgroundTint="@color/green_primary"
+                android:layout_height="match_parent"
                 android:layout_marginHorizontal="6dp"
-                android:src="@drawable/circle_outline"
-                android:layout_height="16dp" />
+                android:background="@drawable/circle_outline" />
+
             <ImageView
                 android:id="@+id/circleAutomn"
                 android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginHorizontal="6dp"
-                android:src="@drawable/circle_outline"
-                android:layout_height="16dp" />
+                android:background="@drawable/circle_outline" />
+
             <ImageView
                 android:id="@+id/circleText"
                 android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginHorizontal="6dp"
-                android:src="@drawable/circle_outline"
-                android:layout_height="16dp" />
+                android:background="@drawable/circle_outline" />
+
             <ImageView
                 android:id="@+id/circleViolet"
                 android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginHorizontal="6dp"
-                android:src="@drawable/circle_outline"
-                android:layout_height="16dp" />
+                android:background="@drawable/circle_outline" />
+
             <ImageView
                 android:id="@+id/circleRed"
                 android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginHorizontal="6dp"
-                android:src="@drawable/circle_outline"
-                android:layout_height="16dp" />
+                android:background="@drawable/circle_outline" />
+
             <ImageView
                 android:id="@+id/circleBlack"
                 android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginHorizontal="6dp"
-                android:src="@drawable/circle_outline"
-                android:layout_height="16dp" />
+                android:background="@drawable/circle_outline" />
+
             <ImageView
                 android:id="@+id/circleGreen"
                 android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginHorizontal="6dp"
-                android:src="@drawable/circle_outline"
-                android:layout_height="16dp" />
+                android:background="@drawable/circle_outline" />
+
             <ImageView
                 android:id="@+id/circleYellow"
                 android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginHorizontal="6dp"
-                android:src="@drawable/circle_outline"
-                android:layout_height="16dp" />
+                android:background="@drawable/circle_outline" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:layout_marginBottom="24dp"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/circle_layout">
@@ -163,29 +173,30 @@
             <TextView
                 android:id="@+id/notSave"
                 style="@style/RoundedLightYellowButton"
-                android:layout_width="0dp"
-                android:layout_height="54dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginVertical="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginVertical="24dp"
                 android:layout_marginEnd="16dp"
-                android:layout_weight="1"
                 android:elevation="20dp"
                 android:fontFamily="@font/ubuntu_bold"
                 android:text="@string/not_save"
                 android:textColor="@color/color_text"
-                android:textSize="18sp" />
-
+                android:textSize="16sp" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
             <TextView
                 android:id="@+id/save"
                 style="@style/RoundedLightYellowButton"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="54dp"
                 android:layout_gravity="center"
+                android:layout_marginVertical="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginVertical="24dp"
                 android:layout_marginEnd="16dp"
-                android:layout_weight="1"
                 android:background="@drawable/rounded_rec_green"
                 android:elevation="20dp"
                 android:text="@string/save"

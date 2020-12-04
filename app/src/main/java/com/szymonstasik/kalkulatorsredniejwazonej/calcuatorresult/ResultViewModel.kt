@@ -1,25 +1,34 @@
 package com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult
 
 import android.app.Application
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.szymonstasik.kalkulatorsredniejwazonej.core.BaseViewModel
-import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
-import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
-import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDao
-import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
+import com.szymonstasik.kalkulatorsredniejwazonej.database.*
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.CalculatorState
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Utils
 import kotlinx.coroutines.*
 import org.koin.core.component.inject
+
+data class ChosenCircle(
+    var circleImageView: ImageView,
+    var colorId: Int
+)
+
+data class TagChooser(
+    var averageTag: AverageTag,
+    var chosen: Boolean = false
+)
 
 class ResultViewModel(context: Application): BaseViewModel(context) {
 
     private val calculatorState: CalculatorState by inject()
 
     private val dataSource: WeightedAverageDatabase by inject()
-    private val weigtedAverageDatabase: WeightedAverageDao = dataSource.weightedAverageDao;
-    private val averageTagsDatabase: WeightedAverageDao = dataSource.weightedAverageDao;
+    private val weightedAverageDatabase: WeightedAverageDao = dataSource.weightedAverageDao
+    private val averageTagsDatabase: AverageTagsDao = dataSource.averageTagsDao
+
 
     /**
      * viewModelJob allows us to cancel all coroutines started by this ViewModel.
@@ -36,7 +45,30 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
         viewModelJob.cancel()
     }
 
+
+
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    private val _chosenCircle = MutableLiveData<ChosenCircle>()
+
+    val chosenCircle: LiveData<ChosenCircle>
+        get() {
+        return _chosenCircle
+    }
+
+
+
+    fun setChosenCircle(id: ImageView, colorId: Int){
+        val circle = ChosenCircle(circleImageView = id, colorId = colorId)
+        _chosenCircle.value = circle
+    }
+
+    private val _allAverageTags = MutableLiveData<MutableList<TagChooser>>()
+
+    val allAverageTags: LiveData<MutableList<TagChooser>>
+        get() {
+            return _allAverageTags
+        }
 
     private val _weightedAverage = MutableLiveData<WeightedAverage>()
 
@@ -109,10 +141,19 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
     init {
         _weightedAverage.value = calculatorState.currentWeightedAverage
         uiScope.launch {
-//            _weightedAverage.value = getWeightedAverage(weightedAverageKey)
+            val tags = getAllAverageTags()
+            val tagsChooser = ArrayList<TagChooser>()
+            for (tag in tags){
+                if(calculatorState.currentWeightedAverage.tags.contains(tag))
+                    tagsChooser.add(TagChooser(tag, true))
+                else
+                    tagsChooser.add(TagChooser(tag, false))
+            }
+            _allAverageTags.value = tagsChooser
             instantinateResult()
         }
     }
+
 
     private fun instantinateResult() {
         val resultNoteList = _weightedAverage.value?.notes
@@ -129,21 +170,40 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
         }
     }
 
+    fun addTag(averageTag: AverageTag){
+        uiScope.launch {
+            insertAverageTag(averageTag);
+            allAverageTags.value
+        }
+    }
+
+    private suspend fun getAllAverageTags(): List<AverageTag> {
+        return  withContext(Dispatchers.IO){
+            averageTagsDatabase.getAllTags()
+        }
+    }
+
     private suspend fun getWeightedAverage(key: Long) : WeightedAverage? {
         return withContext(Dispatchers.IO) {
-            weigtedAverageDatabase.get(key)
+            weightedAverageDatabase.get(key)
         }
     }
 
     private suspend fun update(weightedAverage: WeightedAverage) {
         withContext(Dispatchers.IO) {
-            weigtedAverageDatabase.update(weightedAverage)
+            weightedAverageDatabase.update(weightedAverage)
         }
     }
 
     private suspend fun insert(weightedAverage: WeightedAverage): Long {
         return withContext(Dispatchers.IO) {
-            weigtedAverageDatabase.insert(weightedAverage)
+            weightedAverageDatabase.insert(weightedAverage)
+        }
+    }
+
+    private suspend fun insertAverageTag(averageTag: AverageTag): Long {
+        return withContext(Dispatchers.IO) {
+            averageTagsDatabase.insert(averageTag)
         }
     }
 }
