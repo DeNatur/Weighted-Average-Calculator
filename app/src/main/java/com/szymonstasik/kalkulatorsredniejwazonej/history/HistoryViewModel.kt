@@ -4,11 +4,9 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult.TagChooser
 import com.szymonstasik.kalkulatorsredniejwazonej.core.BaseViewModel
-import com.szymonstasik.kalkulatorsredniejwazonej.database.NoteNWeight
-import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
-import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDao
-import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverageDatabase
+import com.szymonstasik.kalkulatorsredniejwazonej.database.*
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.CalculatorState
 import kotlinx.coroutines.*
 import org.koin.core.component.inject
@@ -64,6 +62,13 @@ class HistoryViewModel(context: Application): BaseViewModel(context) {
         _backPressState.value = true
     }
 
+    private val _listOfWeightedAveragesChooser = MutableLiveData<List<WeightedAverageChooser>>()
+
+    val listOfWeightedAveragesChooser: LiveData<List<WeightedAverageChooser>>
+        get(){
+            return  _listOfWeightedAveragesChooser
+        }
+
     private val _listOfWeightAverages = MediatorLiveData<List<WeightedAverage>>()
 
     val listOfWeightedAverage: LiveData<List<WeightedAverage>>
@@ -72,7 +77,16 @@ class HistoryViewModel(context: Application): BaseViewModel(context) {
         }
 
     init {
-        _listOfWeightAverages.addSource(database.getAllAverageTags(), _listOfWeightAverages::setValue)
+        _listOfWeightAverages.addSource(database.getAllWeightedAverages(), _listOfWeightAverages::setValue)
+        val tmpArray = ArrayList<WeightedAverageChooser>()
+        _listOfWeightedAveragesChooser.value = ArrayList()
+        uiScope.launch {
+            val allWeightedAverages = getAllWeightedAverages()
+            for (avg in allWeightedAverages){
+                tmpArray.add(WeightedAverageChooser(weightedAverage = avg, chosen = false))
+            }
+            _listOfWeightedAveragesChooser.value = tmpArray
+        }
     }
 
     fun onFABClick(){
@@ -80,30 +94,48 @@ class HistoryViewModel(context: Application): BaseViewModel(context) {
         _navigateToCalculator.value = true
     }
 
-//    fun onDeleteClick(weightedAverage: WeightedAverage){
-//        uiScope.launch {
-//            delete(weightedAverage)
-//        }
-//    }
+    fun onEditClick(weightedAverage: WeightedAverage){
+        calculatorState.currentWeightedAverage = weightedAverage
+        _navigateToCalculator.value = true
+    }
+
+    fun changeWeightedAverageToChosen(weightedAverageChooser: WeightedAverageChooser){
+        val listOfTags: ArrayList<WeightedAverageChooser> = _listOfWeightedAveragesChooser.value as ArrayList<WeightedAverageChooser>
+        val index = listOfTags.indexOf(weightedAverageChooser)
+        listOfTags.remove(weightedAverageChooser)
+        weightedAverageChooser.chosen = !weightedAverageChooser.chosen
+        listOfTags.add(index, weightedAverageChooser)
+        _listOfWeightedAveragesChooser.value = listOfTags
+    }
+
+    fun onPressDelete(){
+        uiScope.launch {
+            val avgToDelete = ArrayList<WeightedAverage>()
+            val allTagChoosers = _listOfWeightedAveragesChooser.value as ArrayList
+            val endTags = ArrayList<WeightedAverageChooser>()
+            for(avg in allTagChoosers){
+                if(avg.chosen){
+                    avgToDelete.add(avg.weightedAverage)
+                }else{
+                    endTags.add(avg)
+                }
+            }
+            for(avg in avgToDelete){
+                delete(avg)
+            }
+            _listOfWeightedAveragesChooser.value = endTags
+        }
+
+    }
+
 
     fun doneNavigationToCalculator(){
         _navigateToCalculator.value = false
     }
 
-    fun onCalculatorClick(){
-        uiScope.launch {
-            var tmpArray = ArrayList<NoteNWeight>()
-            tmpArray.add(NoteNWeight())
-            val newWeightedAverage = WeightedAverage(
-                notes = tmpArray
-            )
-//            _navigateToCalculator.value =  insert(newWeightedAverage)
-        }
-    }
-
-    private suspend fun insert(weightedAverage: WeightedAverage): Long {
-        return withContext(Dispatchers.IO) {
-            database.insert(weightedAverage)
+    private suspend fun getAllWeightedAverages() : List<WeightedAverage>{
+        return withContext(Dispatchers.IO){
+            database.getAllAverages()
         }
     }
 

@@ -6,6 +6,7 @@
 
     <color name="green_start">#BFDC9A</color>
     <color name="bg_start">#ffffff</color>
+    <color name="bg">#000000</color>
     <color name="color_text">#735C5C</color>
     <color name="color_title">#654747</color>
     <color name="green_blank">#BFDC9A</color>

@@ -2,24 +2,35 @@ package com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.szymonstasik.kalkulatorsredniejwazonej.R
+import com.szymonstasik.kalkulatorsredniejwazonej.database.AverageTag
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.DialogChooseTagsBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentResultBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Utils
+import org.koin.android.ext.android.bind
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ResultFragment : Fragment() {
-    val resultViewModel by viewModel<ResultViewModel>()
+    private val resultViewModel by viewModel<ResultViewModel>()
+
+    private val tagsAdapter = TagsChosenAdapter(list = ArrayList())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,8 +39,6 @@ class ResultFragment : Fragment() {
         val binding: FragmentResultBinding =  DataBindingUtil.inflate(
             inflater, R.layout.fragment_result, container, false
         )
-
-
         val adapter = ResultNotesAdapter()
 
         setupUI(binding.parent)
@@ -39,15 +48,6 @@ class ResultFragment : Fragment() {
         binding.resultViewModel = resultViewModel
 
         binding.lifecycleOwner = this
-
-        binding.tagsRecycler.layoutManager = ChipsLayoutManager.newBuilder(context)
-            .setChildGravity(Gravity.LEFT)
-            .setScrollingEnabled(false)
-            .setOrientation(ChipsLayoutManager.HORIZONTAL)
-            .setRowStrategy(ChipsLayoutManager.STRATEGY_DEFAULT)
-            .withLastRow(true)
-            .build()
-
 
         resultViewModel.result.observe(viewLifecycleOwner, Observer {
             binding.resultText.text = getString(R.string.weighted_average_name_and_value, it)
@@ -69,14 +69,46 @@ class ResultFragment : Fragment() {
 
         resultViewModel.navigateToHistory.observe(viewLifecycleOwner, Observer {
             if (it) {
+                Log.d("chosen", "navigate")
                 findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
                 resultViewModel.onDoneNavigatingToHistory()
             }
         })
 
-        binding.tagButton.setOnClickListener {
-            context?.let { it1 -> showTagsDialog(it1) }
+        binding.save.setOnClickListener {
+            resultViewModel.onPressSave(binding.editTextName.text.toString())
         }
+
+        binding.notSave.setOnClickListener {
+            resultViewModel.onPressNotSave()
+        }
+
+        binding.tagButton.setOnClickListener {
+            context?.let { it1 -> showTagsDialog(context = it1) }
+        }
+
+
+        binding.tagsRecycler.adapter = tagsAdapter
+
+        binding.tagsRecycler.layoutManager = ChipsLayoutManager.newBuilder(context)
+            .setChildGravity(Gravity.LEFT)
+            .setScrollingEnabled(false)
+            .setOrientation(ChipsLayoutManager.HORIZONTAL)
+            .setRowStrategy(ChipsLayoutManager.STRATEGY_DEFAULT)
+            .withLastRow(true)
+            .build()
+
+        val itemDecoratorHorizontal = DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
+        itemDecoratorHorizontal.setDrawable(context?.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
+        val itemDecoratorVertical= DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        itemDecoratorHorizontal.setDrawable(context?.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
+
+        binding.tagsRecycler.addItemDecoration(
+            itemDecoratorHorizontal
+        )
+        binding.tagsRecycler.addItemDecoration(itemDecoratorVertical)
+
+        setTagsRecyclerObserver()
 
         return binding.root
     }
@@ -94,7 +126,41 @@ class ResultFragment : Fragment() {
         setAllStroke(binding)
         setOnClickListeners(binding)
         resultViewModel.setChosenCircle(binding.circlePink, R.color.pink)
+        val adapter = TagsAdapter(resultViewModel = resultViewModel, list = ArrayList())
 
+        binding.tagsRecycler.adapter = adapter
+
+        binding.tagsRecycler.layoutManager = ChipsLayoutManager.newBuilder(context)
+            .setChildGravity(Gravity.LEFT)
+            .setScrollingEnabled(false)
+            .setOrientation(ChipsLayoutManager.HORIZONTAL)
+            .setRowStrategy(ChipsLayoutManager.STRATEGY_DEFAULT)
+            .withLastRow(true)
+            .build()
+
+        val itemDecoratorHorizontal = DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
+        itemDecoratorHorizontal.setDrawable(context.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
+        val itemDecoratorVertical= DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        itemDecoratorHorizontal.setDrawable(context.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
+
+        binding.tagsRecycler.addItemDecoration(
+            itemDecoratorHorizontal
+        )
+        binding.tagsRecycler.addItemDecoration(itemDecoratorVertical)
+
+        resultViewModel.allAverageTags.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                adapter.setList(it as ArrayList<TagChooser>)
+            }
+        })
+
+        binding.fabButton.setOnClickListener {
+            resultViewModel.addTag(binding.editTextName.text.toString())
+        }
+
+        binding.apply.setOnClickListener {
+            dialog.dismiss()
+        }
         dialog.setContentView(binding.root)
         dialog.show()
     }
@@ -142,6 +208,23 @@ class ResultFragment : Fragment() {
         val drawable = imageView.background as GradientDrawable
         drawable.setStroke(6, resources.getColor(colorId))
     }
+
+
+    private fun setTagsRecyclerObserver(){
+        resultViewModel.allAverageTags.observe(viewLifecycleOwner, Observer {
+            if(it != null){
+                val tmpArray = ArrayList<AverageTag>()
+                for (avg in it){
+                    if(avg.chosen){
+                        tmpArray.add(avg.averageTag)
+                    }
+                }
+                Log.d("averageTags","submitting: " + tmpArray.size)
+                tagsAdapter.setList(tmpArray)
+            }
+        })
+    }
+
 
     private fun setupUI(view: View) {
         if (view !is EditText) {

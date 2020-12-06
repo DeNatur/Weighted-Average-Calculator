@@ -22,7 +22,7 @@ data class WeightedAverage(
     var notes: List<NoteNWeight>,
 
     @ColumnInfo(name = "tags")
-    var tags: List<AverageTag> = ArrayList()
+    var tags: List<AverageTag>
 )
 
 @Entity(tableName = "average_tags_table")

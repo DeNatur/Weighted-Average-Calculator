@@ -64,6 +64,13 @@ interface WeightedAverageDao {
     fun getAllWeightedAverages(): LiveData<List<WeightedAverage>>
 
     /**
+     * Selects and returns all rows in the table,
+     *
+     * sorted by start time in descending order.
+     */
+    @Query("SELECT * FROM weighted_average_table ORDER BY id DESC")
+    fun getAllAverages(): List<WeightedAverage>
+    /**
      * Selects and returns the weighted average with given id.
      */
     @Query("SELECT * from weighted_average_table WHERE id = :key")

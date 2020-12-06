@@ -21,10 +21,13 @@ fun TextView.setName(item: WeightedAverage?) {
     }
 }
 
+
 @BindingAdapter("weightedAverageDate")
 fun TextView.setDate(item: WeightedAverage?) {
     item?.let {
-        text = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(item.timeAddedMilli).toString()
+        var txt = resources.getText(R.string.date)
+        var date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(item.timeAddedMilli).toString();
+        text = "$txt $date"
     }
 }
 

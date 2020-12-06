@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.WeightedAverage
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.DialogWeightAverageChooserBinding
+import com.szymonstasik.kalkulatorsredniejwazonej.databinding.ItemRecentAveragesBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.ListItemWeightedAverageBinding
 
-class HistoryWeightedAverageAdapter(private val historyViewModel: HistoryViewModel)
-    : ListAdapter<WeightedAverage, HistoryWeightedAverageAdapter.ViewHolder>
+class RecentAvgAdapter()
+    : ListAdapter<WeightedAverage, RecentAvgAdapter.ViewHolder>
     (WeightedAverageDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,51 +25,27 @@ class HistoryWeightedAverageAdapter(private val historyViewModel: HistoryViewMod
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) as WeightedAverage
-        holder.bind(item, historyViewModel)
+        holder.bind(item)
     }
 
-    class ViewHolder private constructor(private val binding: ListItemWeightedAverageBinding)
+    class ViewHolder private constructor(private val binding: ItemRecentAveragesBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: WeightedAverage, historyViewModel: HistoryViewModel) {
+        fun bind(item: WeightedAverage) {
             binding.weightedAverage = item
             binding.root.context
-            binding.parent.setOnClickListener {
-                showDialog(binding.root.context, item, historyViewModel)
-            }
             binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ListItemWeightedAverageBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemRecentAveragesBinding.inflate(layoutInflater, parent, false)
 
                 return ViewHolder(binding)
             }
         }
 
-        private fun showDialog(context: Context, item: WeightedAverage, historyViewModel: HistoryViewModel){
-            val dialog = Dialog(context)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            val layoutInflater = LayoutInflater.from(context)
-            val binding: DialogWeightAverageChooserBinding =
-                DataBindingUtil.inflate(layoutInflater, R.layout.dialog_weight_average_chooser, null, false)
-
-            binding.historyViewModel = historyViewModel
-
-            binding.deleteNote.setOnClickListener {
-//                historyViewModel.onDeleteClick(item)
-                dialog.dismiss()
-            }
-
-            binding.editNote.setOnClickListener {
-//                historyViewModel.onEditClick(item.id)
-                dialog.dismiss()
-            }
-            dialog.setContentView(binding.root)
-            dialog.show()
-        }
     }
 
     /**

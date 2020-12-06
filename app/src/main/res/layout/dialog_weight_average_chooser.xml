@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="historyViewModel"
-            type="com.szymonstasik.kalkulatorsredniejwazonej.history.HistoryViewModel" />
-    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,52 +13,53 @@
             android:id="@+id/whatDoYouWantTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
             android:fontFamily="@font/ubuntu_bold"
-            android:text="@string/what_do_you_want_to_do"
-            android:textColor="@color/green_primary"
+            android:text="@string/dialog_delete_question"
+            android:textColor="@color/color_text"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/deleteNote"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/rounded_rec_green"
-            android:fontFamily="@font/ubuntu_bold"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/delete"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/editNote"
-            app:layout_constraintTop_toBottomOf="@+id/whatDoYouWantTxt" />
 
         <TextView
-            android:id="@+id/editNote"
+            android:id="@+id/cancel"
+            style="@style/RoundedLightYellowButton"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/rounded_rec_green"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp"
+            android:elevation="20dp"
             android:fontFamily="@font/ubuntu_bold"
-            android:gravity="center"
-            android:maxLines="1"
-            android:padding="10dp"
-            android:text="@string/edit"
-            android:textColor="@color/white"
+            android:text="@string/cancel"
+            android:textColor="@color/color_text"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/deleteNote"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/whatDoYouWantTxt" />
+
+
+        <TextView
+            android:id="@+id/delete"
+            style="@style/RoundedLightYellowButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/rounded_rec_green"
+            android:elevation="20dp"
+            android:text="@string/delete_avg"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/whatDoYouWantTxt" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

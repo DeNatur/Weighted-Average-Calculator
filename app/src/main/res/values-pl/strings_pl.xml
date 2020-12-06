@@ -29,8 +29,10 @@
     <string name="no_name">nie nazwano</string>
     <string name="weighted_average_value">%.2f</string>
     <string name="date">Data: </string>
+    <string name="apply">Zastosuj</string>
 
     <string name="what_do_you_want_to_do">Co chcesz zrobić?</string>
+    <string name="dialog_delete_question">Czy na pewno chcesz usunąć?</string>
 
     <string name="rate_app">Oceń aplikację!</string>
     <string name="rate_app_message">Jeśli podoba Ci się aplikacja, czy mógłbyś poświęcić chwilę na jej ocenę? To nie zajmie więcej niż minutę. Dziękuję za wsparcie!</string>
@@ -43,8 +45,9 @@
     <string name="change">Zmień</string>
     <string name="change_tags">Zmień oznaczenia</string>
     <string name="name">Nazwa:</string>
-
-
+    <string name="name_empty">Nazwa nie może być pusta</string>
+    <string name="delete_avg">Usuń</string>
+    <string name="cancel">Anuluj</string>
     <string name="no_results">Nie masz jeszcze żadnych wyników</string>
 
 

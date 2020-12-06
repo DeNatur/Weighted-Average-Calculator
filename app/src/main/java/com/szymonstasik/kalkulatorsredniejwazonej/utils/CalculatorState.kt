@@ -13,7 +13,7 @@ class CalculatorState(){
     fun setNewWeightedAverage(){
         val tmpArray = ArrayList<NoteNWeight>()
         tmpArray.add(NoteNWeight())
-        _currentWeightedAverage = WeightedAverage(notes = tmpArray);
+        _currentWeightedAverage = WeightedAverage(notes = tmpArray, tags = ArrayList());
     }
 
 

@@ -16,11 +16,6 @@ data class ChosenCircle(
     var colorId: Int
 )
 
-data class TagChooser(
-    var averageTag: AverageTag,
-    var chosen: Boolean = false
-)
-
 class ResultViewModel(context: Application): BaseViewModel(context) {
 
     private val calculatorState: CalculatorState by inject()
@@ -63,9 +58,16 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
         _chosenCircle.value = circle
     }
 
-    private val _allAverageTags = MutableLiveData<MutableList<TagChooser>>()
+    private val _chosenTags = MutableLiveData<List<AverageTag>>()
 
-    val allAverageTags: LiveData<MutableList<TagChooser>>
+    val chosenTags: LiveData<List<AverageTag>>
+        get() {
+            return _chosenTags
+        }
+
+    private val _allAverageTags = MutableLiveData<List<TagChooser>>()
+
+    val allAverageTags: LiveData<List<TagChooser>>
         get() {
             return _allAverageTags
         }
@@ -79,12 +81,6 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
 
     private val _result = MutableLiveData<Float>()
 
-    private val _navigateToCalculator = MutableLiveData<Long>()
-
-    val navigateToCalculator: LiveData<Long>
-        get() {
-            return  _navigateToCalculator
-        }
 
     private val _navigateToHistory = MutableLiveData<Boolean>()
 
@@ -101,32 +97,41 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
             return _backPressState
         }
 
+    fun onPressSave(name: String){
+        uiScope.launch {
+            val avgToAdd = _weightedAverage.value
+            if (avgToAdd != null) {
+                    avgToAdd.name = name
+
+                val tmpArray = ArrayList<AverageTag>()
+                for (avg in _allAverageTags.value!!){
+                    if(avg.chosen){
+                        tmpArray.add(avg.averageTag)
+                    }
+                }
+                avgToAdd.tags = tmpArray
+                if(avgToAdd.id != 0L){
+                    update(avgToAdd)
+                }else{
+                    insert(avgToAdd)
+
+                }
+            }
+        }
+        _navigateToHistory.value = true
+    }
+
+    fun onPressNotSave(){
+        _navigateToHistory.value = true
+    }
+
+
     fun donePopBack(){
         _backPressState.value = false
     }
 
     fun onBackPressed(){
         _backPressState.value = true
-    }
-
-    fun onCalculateAgainCLick(){
-        uiScope.launch {
-            var tmpArray = ArrayList<NoteNWeight>()
-            tmpArray.add(NoteNWeight())
-            val newWeightedAverage = WeightedAverage(
-                notes = tmpArray
-
-            )
-            _navigateToCalculator.value =  insert(newWeightedAverage)
-        }
-    }
-
-    fun onNameNoteNWeightsClick(name: String){
-        uiScope.launch {
-            _weightedAverage.value?.name = name
-            _weightedAverage.value?.let { update(it) }
-            _navigateToHistory.value = true
-        }
     }
 
     fun onDoneNavigatingToHistory(){
@@ -140,6 +145,7 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
 
     init {
         _weightedAverage.value = calculatorState.currentWeightedAverage
+        _chosenTags.value = ArrayList()
         uiScope.launch {
             val tags = getAllAverageTags()
             val tagsChooser = ArrayList<TagChooser>()
@@ -152,6 +158,33 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
             _allAverageTags.value = tagsChooser
             instantinateResult()
         }
+    }
+
+    fun addTag(name: String){
+        uiScope.launch {
+            val averageTag = AverageTag(color = _chosenCircle.value!!.colorId, name = name)
+            averageTag.id = insertAverageTag(averageTag)
+            val tag = TagChooser(averageTag = averageTag, chosen = true)
+            val listOfTags: ArrayList<TagChooser> = _allAverageTags.value as ArrayList<TagChooser>
+            listOfTags.add(tag)
+            _allAverageTags.value = listOfTags
+        }
+    }
+
+    fun changeTagToChosen(tag:TagChooser){
+        val listOfTags: ArrayList<TagChooser> = _allAverageTags.value as ArrayList<TagChooser>
+        val index = listOfTags.indexOf(tag)
+        listOfTags.remove(tag)
+        tag.chosen = !tag.chosen
+        listOfTags.add(index, tag)
+        _allAverageTags.value = listOfTags
+        val tmpArrayList: ArrayList<AverageTag> = _chosenTags.value as ArrayList<AverageTag>
+        if(tag.chosen){
+            tmpArrayList.add(tag.averageTag)
+        }else{
+            tmpArrayList.remove(tag.averageTag)
+        }
+        _chosenTags.value = tmpArrayList
     }
 
 
@@ -167,13 +200,6 @@ class ResultViewModel(context: Application): BaseViewModel(context) {
                 allValues +=  note * weight
             }
             _result.value = allValues / allWeights
-        }
-    }
-
-    fun addTag(averageTag: AverageTag){
-        uiScope.launch {
-            insertAverageTag(averageTag);
-            allAverageTags.value
         }
     }
 

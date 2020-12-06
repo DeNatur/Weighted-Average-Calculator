@@ -27,9 +27,10 @@
     <string name="weighted_average_name">Name: </string>
     <string name="no_name">unnamed</string>
     <string name="weighted_average_value">%.2f</string>
-    <string name="date">Date: </string>
+    <string name="date">Date:</string>
 
     <string name="what_do_you_want_to_do">What do you want to do?</string>
+    <string name="dialog_delete_question">Are you sure you want to delete?</string>
 
     <string name="rate_app">Rate this up</string>
     <string name="rate_app_message">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thank you for your support!</string>
@@ -42,6 +43,10 @@
     <string name="change">Change</string>
     <string name="change_tags">Change Tags</string>
     <string name="name">Name:</string>
+    <string name="name_empty">Name cannot be empty</string>
+    <string name="apply">Apply</string>
+    <string name="delete_avg">Delete</string>
+    <string name="cancel">Cancel</string>
 
     <string name="no_results">You don\'t have any averages</string>
 
