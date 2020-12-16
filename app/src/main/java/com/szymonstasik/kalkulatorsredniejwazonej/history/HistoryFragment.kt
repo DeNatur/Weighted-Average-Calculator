@@ -63,6 +63,16 @@ class HistoryFragment : Fragment() {
             listOfAveragesAdapter.submitList(it)
         })
 
+        historyViewModel.emptySelection.observe(viewLifecycleOwner, Observer {
+            if(it){
+                binding.delete.alpha = 0.2F
+                binding.delete.isClickable = false
+            }else{
+                binding.delete.alpha = 1F
+                binding.delete.isClickable = true
+            }
+        })
+
         historyViewModel.backPressState.observe(viewLifecycleOwner, Observer {
             if(it) {
                 findNavController().popBackStack()

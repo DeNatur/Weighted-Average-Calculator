@@ -55,6 +55,12 @@ class HistoryViewModel(context: Application): BaseViewModel(context) {
         return _backPressState
     }
 
+    private val _emptySelection = MutableLiveData<Boolean>()
+
+    val emptySelection: LiveData<Boolean>
+
+    get() {return _emptySelection}
+
     fun donePopBack(){
         _backPressState.value = false
     }
@@ -80,6 +86,7 @@ class HistoryViewModel(context: Application): BaseViewModel(context) {
         _listOfWeightAverages.addSource(database.getAllWeightedAverages(), _listOfWeightAverages::setValue)
         val tmpArray = ArrayList<WeightedAverageChooser>()
         _listOfWeightedAveragesChooser.value = ArrayList()
+        _emptySelection.value = true
         uiScope.launch {
             val allWeightedAverages = getAllWeightedAverages()
             for (avg in allWeightedAverages){
@@ -105,7 +112,16 @@ class HistoryViewModel(context: Application): BaseViewModel(context) {
         listOfTags.remove(weightedAverageChooser)
         weightedAverageChooser.chosen = !weightedAverageChooser.chosen
         listOfTags.add(index, weightedAverageChooser)
+        var empty = true
+        for(avg in listOfTags){
+            if(avg.chosen){
+                empty = false
+                break
+            }
+        }
+        _emptySelection.value = empty
         _listOfWeightedAveragesChooser.value = listOfTags
+
     }
 
     fun onPressDelete(){

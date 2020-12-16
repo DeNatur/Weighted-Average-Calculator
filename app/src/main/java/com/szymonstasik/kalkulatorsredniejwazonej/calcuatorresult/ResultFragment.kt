@@ -2,29 +2,28 @@ package com.szymonstasik.kalkulatorsredniejwazonej.calcuatorresult
 
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.tasks.Task
 import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.AverageTag
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.DialogChooseTagsBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentResultBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Utils
-import org.koin.android.ext.android.bind
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ResultFragment : Fragment() {
@@ -70,8 +69,32 @@ class ResultFragment : Fragment() {
         resultViewModel.navigateToHistory.observe(viewLifecycleOwner, Observer {
             if (it) {
                 Log.d("chosen", "navigate")
-                findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
-                resultViewModel.onDoneNavigatingToHistory()
+                val manager: ReviewManager = ReviewManagerFactory.create(requireActivity())
+                val request: Task<ReviewInfo> = manager.requestReviewFlow()
+                request.addOnCompleteListener { task ->
+                    try {
+                        if (task.isSuccessful()) {
+                            // We can get the ReviewInfo object
+                            val reviewInfo: ReviewInfo = task.getResult()
+                            val flow: Task<Void> =
+                                manager.launchReviewFlow(requireActivity(), reviewInfo)
+                            flow.addOnCompleteListener { task2 ->
+                                // The flow has finished. The API does not indicate whether the user
+                                // reviewed or not, or even whether the review dialog was shown. Thus, no
+                                // matter the result, we continue our app flow.
+                                findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
+                                resultViewModel.onDoneNavigatingToHistory()                            }
+                        } else {
+                            // There was some problem, continue regardless of the result.
+                            findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
+                            resultViewModel.onDoneNavigatingToHistory()                        }
+                    } catch (ex: Exception) {
+                        findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
+                        resultViewModel.onDoneNavigatingToHistory()
+                    }
+                }
+
+
             }
         })
 
@@ -98,10 +121,23 @@ class ResultFragment : Fragment() {
             .withLastRow(true)
             .build()
 
-        val itemDecoratorHorizontal = DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
-        itemDecoratorHorizontal.setDrawable(context?.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
+        val itemDecoratorHorizontal = DividerItemDecoration(
+            context,
+            DividerItemDecoration.HORIZONTAL
+        )
+        itemDecoratorHorizontal.setDrawable(context?.let {
+            ContextCompat.getDrawable(
+                it,
+                R.drawable.divider
+            )
+        }!!)
         val itemDecoratorVertical= DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        itemDecoratorHorizontal.setDrawable(context?.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
+        itemDecoratorHorizontal.setDrawable(context?.let {
+            ContextCompat.getDrawable(
+                it,
+                R.drawable.divider
+            )
+        }!!)
 
         binding.tagsRecycler.addItemDecoration(
             itemDecoratorHorizontal
@@ -138,10 +174,23 @@ class ResultFragment : Fragment() {
             .withLastRow(true)
             .build()
 
-        val itemDecoratorHorizontal = DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
-        itemDecoratorHorizontal.setDrawable(context.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
+        val itemDecoratorHorizontal = DividerItemDecoration(
+            context,
+            DividerItemDecoration.HORIZONTAL
+        )
+        itemDecoratorHorizontal.setDrawable(context.let {
+            ContextCompat.getDrawable(
+                it,
+                R.drawable.divider
+            )
+        }!!)
         val itemDecoratorVertical= DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        itemDecoratorHorizontal.setDrawable(context.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
+        itemDecoratorHorizontal.setDrawable(context.let {
+            ContextCompat.getDrawable(
+                it,
+                R.drawable.divider
+            )
+        }!!)
 
         binding.tagsRecycler.addItemDecoration(
             itemDecoratorHorizontal
@@ -166,14 +215,38 @@ class ResultFragment : Fragment() {
     }
 
     private fun setOnClickListeners(binding: DialogChooseTagsBinding){
-        binding.circlePink.setOnClickListener { resultViewModel.setChosenCircle(binding.circlePink, R.color.pink) }
-        binding.circleAutomn.setOnClickListener { resultViewModel.setChosenCircle(binding.circleAutomn, R.color.automn) }
-        binding.circleText.setOnClickListener { resultViewModel.setChosenCircle(binding.circleText, R.color.color_text) }
-        binding.circleViolet.setOnClickListener { resultViewModel.setChosenCircle(binding.circleViolet, R.color.violet) }
-        binding.circleRed.setOnClickListener { resultViewModel.setChosenCircle(binding.circleRed, R.color.red) }
-        binding.circleBlack.setOnClickListener { resultViewModel.setChosenCircle(binding.circleBlack, R.color.black) }
-        binding.circleGreen.setOnClickListener { resultViewModel.setChosenCircle(binding.circleGreen, R.color.green_light) }
-        binding.circleYellow.setOnClickListener { resultViewModel.setChosenCircle(binding.circleYellow, R.color.yellow) }
+        binding.circlePink.setOnClickListener { resultViewModel.setChosenCircle(
+            binding.circlePink,
+            R.color.pink
+        ) }
+        binding.circleAutomn.setOnClickListener { resultViewModel.setChosenCircle(
+            binding.circleAutomn,
+            R.color.automn
+        ) }
+        binding.circleText.setOnClickListener { resultViewModel.setChosenCircle(
+            binding.circleText,
+            R.color.color_text
+        ) }
+        binding.circleViolet.setOnClickListener { resultViewModel.setChosenCircle(
+            binding.circleViolet,
+            R.color.violet
+        ) }
+        binding.circleRed.setOnClickListener { resultViewModel.setChosenCircle(
+            binding.circleRed,
+            R.color.red
+        ) }
+        binding.circleBlack.setOnClickListener { resultViewModel.setChosenCircle(
+            binding.circleBlack,
+            R.color.black
+        ) }
+        binding.circleGreen.setOnClickListener { resultViewModel.setChosenCircle(
+            binding.circleGreen,
+            R.color.green_light
+        ) }
+        binding.circleYellow.setOnClickListener { resultViewModel.setChosenCircle(
+            binding.circleYellow,
+            R.color.yellow
+        ) }
     }
 
     private fun setAllStroke(binding: DialogChooseTagsBinding) {
@@ -212,14 +285,14 @@ class ResultFragment : Fragment() {
 
     private fun setTagsRecyclerObserver(){
         resultViewModel.allAverageTags.observe(viewLifecycleOwner, Observer {
-            if(it != null){
+            if (it != null) {
                 val tmpArray = ArrayList<AverageTag>()
-                for (avg in it){
-                    if(avg.chosen){
+                for (avg in it) {
+                    if (avg.chosen) {
                         tmpArray.add(avg.averageTag)
                     }
                 }
-                Log.d("averageTags","submitting: " + tmpArray.size)
+                Log.d("averageTags", "submitting: " + tmpArray.size)
                 tagsAdapter.setList(tmpArray)
             }
         })
