@@ -88,6 +88,7 @@
             android:backgroundTint="@color/automn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tagsRecycler"
+            android:tint="@color/bg_start"
             app:srcCompat="@drawable/ic_baseline_add_24" />
 
         <LinearLayout
@@ -181,7 +182,7 @@
                 android:background="@drawable/rounded_rec_green"
                 android:elevation="20dp"
                 android:text="@string/apply"
-                android:textColor="@color/white"
+                android:textColor="@color/bg_start"
                 android:textSize="18sp" />
         </LinearLayout>
 

@@ -23,6 +23,7 @@ import com.szymonstasik.kalkulatorsredniejwazonej.R
 import com.szymonstasik.kalkulatorsredniejwazonej.database.AverageTag
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.DialogChooseTagsBinding
 import com.szymonstasik.kalkulatorsredniejwazonej.databinding.FragmentResultBinding
+import com.szymonstasik.kalkulatorsredniejwazonej.utils.Statics
 import com.szymonstasik.kalkulatorsredniejwazonej.utils.Utils
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -69,32 +70,40 @@ class ResultFragment : Fragment() {
         resultViewModel.navigateToHistory.observe(viewLifecycleOwner, Observer {
             if (it) {
                 Log.d("chosen", "navigate")
-                val manager: ReviewManager = ReviewManagerFactory.create(requireActivity())
-                val request: Task<ReviewInfo> = manager.requestReviewFlow()
-                request.addOnCompleteListener { task ->
-                    try {
-                        if (task.isSuccessful()) {
-                            // We can get the ReviewInfo object
-                            val reviewInfo: ReviewInfo = task.getResult()
-                            val flow: Task<Void> =
-                                manager.launchReviewFlow(requireActivity(), reviewInfo)
-                            flow.addOnCompleteListener { task2 ->
-                                // The flow has finished. The API does not indicate whether the user
-                                // reviewed or not, or even whether the review dialog was shown. Thus, no
-                                // matter the result, we continue our app flow.
+                var counter = requireActivity().getPreferences(Context.MODE_PRIVATE).getInt(Statics.RATE_COUNTER, 0)
+                if(counter > 0){
+                    counter++
+                    Log.d("chosen", "show rate")
+                    val manager: ReviewManager = ReviewManagerFactory.create(requireActivity())
+                    val request: Task<ReviewInfo> = manager.requestReviewFlow()
+                    request.addOnCompleteListener { task ->
+                        try {
+                            if (task.isSuccessful()) {
+                                // We can get the ReviewInfo object
+                                val reviewInfo: ReviewInfo = task.getResult()
+                                val flow: Task<Void> =
+                                    manager.launchReviewFlow(requireActivity(), reviewInfo)
+                                flow.addOnCompleteListener { task2 ->
+                                    // The flow has finished. The API does not indicate whether the user
+                                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+                                    // matter the result, we continue our app flow.
+                                    findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
+                                    resultViewModel.onDoneNavigatingToHistory()                            }
+                            } else {
+                                // There was some problem, continue regardless of the result.
                                 findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
-                                resultViewModel.onDoneNavigatingToHistory()                            }
-                        } else {
-                            // There was some problem, continue regardless of the result.
+                                resultViewModel.onDoneNavigatingToHistory()                        }
+                        } catch (ex: Exception) {
                             findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
-                            resultViewModel.onDoneNavigatingToHistory()                        }
-                    } catch (ex: Exception) {
-                        findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
-                        resultViewModel.onDoneNavigatingToHistory()
+                            resultViewModel.onDoneNavigatingToHistory()
+                        }
                     }
+                }else{
+                    counter++
+                    findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHistoryFragment())
+                    resultViewModel.onDoneNavigatingToHistory()
                 }
-
-
+                requireActivity().getPreferences(Context.MODE_PRIVATE).edit().putInt(Statics.RATE_COUNTER, counter).apply()
             }
         })
 

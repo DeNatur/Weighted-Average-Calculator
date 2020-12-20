@@ -32,6 +32,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="8dp"
+                android:tint="@color/bg_start"
                 android:layout_centerVertical="true"
                 android:background="@drawable/ripple"
                 android:onClick="@{() -> resultViewModel.onBackPressed()}"
@@ -44,7 +45,7 @@
                 android:gravity="center"
                 android:layout_centerInParent="true"
                 android:text="@string/results"
-                android:textColor="@color/white"
+                android:textColor="@color/bg_start"
                 android:textSize="18sp" />
         </RelativeLayout>
 
@@ -221,7 +222,7 @@
                         android:id="@+id/save"
                         style="@style/RoundedLightYellowButton"
                         android:layout_width="0dp"
-                        android:textColor="@color/white"
+                        android:textColor="@color/bg_start"
                         android:layout_weight="1"
                         android:layout_height="54dp"
                         android:layout_gravity="center"
