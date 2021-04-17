@@ -30,4 +30,4 @@ speed of calculating weighted average
 ## License
 Apache 2.0
 
-[![Get it on Google Play](https://play.google.com/store/apps/details?id=com.szymonstasik.kalkulatorsredniejwazone)
+![Get it on Google Play](https://play.google.com/store/apps/details?id=com.szymonstasik.kalkulatorsredniejwazone)
